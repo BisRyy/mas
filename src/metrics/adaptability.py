@@ -25,10 +25,16 @@ def time_to_recovery(
 ) -> int | None:
     """Steps after `drift_step` to first hit (and sustain) `target` service level.
 
+    `service_levels` is indexed by **offset within the sequence**, so callers
+    must pass a sequence whose index 0 corresponds to the start of the test
+    window. `drift_step` is the same kind of offset.
+
     Returns the step offset where service level >= target for at least
     `sustained_window` consecutive steps, or None if never recovered.
     """
     n = len(service_levels)
+    if drift_step >= n:
+        return None
     streak = 0
     for i in range(drift_step, n):
         if service_levels[i] >= target:

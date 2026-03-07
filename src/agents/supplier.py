@@ -39,6 +39,9 @@ class SupplierAgent(BaseInventoryAgent):
     def place_order(self, sku: str, qty: int) -> None:
         arrives = self.model.steps + self.lead_time(sku)
         self.pending.append(_PendingOrder(sku=sku, qty=qty, arrives_at_step=arrives))
+        # Surface aggregate counters for comparison vs baselines.
+        self.n_orders = getattr(self, "n_orders", 0) + 1
+        self.total_units_ordered = getattr(self, "total_units_ordered", 0) + qty
         self.log("po_placed", sku=sku, qty=qty, arrives=arrives)
 
     # --- Mesa hook --------------------------------------------------------
