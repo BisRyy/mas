@@ -1,0 +1,20 @@
+# Proposed MAS under the abrupt drift scenario (Section 3.2 #1).
+name: mas_abrupt_drift
+seed: 42
+n_steps: 365
+
+data:
+  processed_path: data/processed/orders.csv
+
+policy: mas
+
+drift:
+  scenarios:
+    - type: abrupt
+      start: 180
+      duration: 30
+      pct: 0.50
+      affected: top_n_skus  # resolved at runtime
+      n: 50
+
+results_dir: results
