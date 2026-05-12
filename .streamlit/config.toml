@@ -1,0 +1,12 @@
+# Force a consistent dark theme across all environments so the dashboard
+# always renders as designed regardless of system / browser preferences.
+[theme]
+base = "dark"
+primaryColor = "#2A9D8F"
+backgroundColor = "#0e1117"
+secondaryBackgroundColor = "#161b22"
+textColor = "#e5e7eb"
+font = "sans serif"
+
+[browser]
+gatherUsageStats = false

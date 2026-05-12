@@ -5,6 +5,8 @@ __pycache__/
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
+.coverage
+htmlcov/
 
 # Virtualenvs
 .venv/
@@ -34,3 +36,19 @@ results/*
 build/
 dist/
 *.egg-info/
+
+# Secrets / runtime artefacts (never commit these)
+.env
+.env.local
+.env.production
+*.pem
+*.key
+backend/inventory_mas.db
+backend/inventory_mas.db-journal
+
+# Node / Next.js
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/.turbo/
+node_modules/

@@ -61,28 +61,89 @@ docker build -t inventory-mas .
 docker run --rm -v $(pwd):/app inventory-mas python -m experiments.run --config experiments/configs/baseline_rop.yaml
 ```
 
-## Running an experiment
+## Running experiments
 
+### Single run
 ```bash
 python -m experiments.run --config experiments/configs/<name>.yaml
 ```
+
+### Multi-seed sweep (the canonical way)
+```bash
+python -m experiments.sweep \
+  -c experiments/configs/olist_mas_catastrophic.yaml \
+     experiments/configs/olist_static_rop_catastrophic.yaml \
+     experiments/configs/olist_periodic_forecasting_catastrophic.yaml \
+  --seeds 1..10 --jitter 0.2
+```
+
+### Aggregate seeds → mean ± 95% CI
+```bash
+python -m experiments.aggregate results/olist_*_catastrophic
+```
+
+### Run hypothesis tests across the full design matrix
+```bash
+python -m experiments.h1_report          # H1: stockout & cost vs baselines
+python -m experiments.h3_report          # H3: scaling complexity
+python -m experiments.ablation_report    # ablation deltas
+```
+
+### Compare individual runs side-by-side
+```bash
+python -m experiments.compare results/run_a results/run_b results/run_c
+```
+
+### Reproduce everything from scratch
+```bash
+bash scripts/reproduce_all.sh   # ~4 hours; runs the full thesis evaluation
+```
+
+## Dashboard
+
+A Streamlit dashboard renders the same results interactively (per-step plots,
+cost breakdowns, drift event overlays, single-run drilldown).
+
+```bash
+streamlit run app.py
+```
+
+Then open http://localhost:8501. The sidebar lists every scenario found under
+`results/`. The dashboard pulls from `summary.json` + `timeseries.csv`, so
+re-run experiments and refresh the page to pick up new data.
 
 ## Layout
 
 ```
 inventory-mas/
-├── data/                 # raw + processed Olist data (gitignored)
+├── app.py                  # Streamlit dashboard (multi-seed CI bands + H1/H3 tabs)
+├── RESULTS.md              # Headline numbers + hypothesis verdicts
+├── scripts/
+│   ├── reproduce_all.sh    # One-command end-to-end rerun
+│   └── make_figures.py     # Generate publication-quality PDF/PNG figures
+├── figures/                # Static figures (PDF + PNG)
+├── data/                   # Raw + processed Olist data (gitignored)
 ├── src/
-│   ├── agents/           # 5 agents
-│   ├── simulation/       # environment, scheduler, replay, drift injector, logger
-│   ├── baselines/        # static ROP, periodic forecasting
-│   ├── drift/            # ADWIN, PELT detectors
-│   ├── metrics/          # stockout, holding cost, MAPE
-│   └── utils/            # config, seeding, IO
-├── experiments/          # YAML configs + run entrypoint
-├── notebooks/            # exploration & result analysis
-├── results/              # logs + figures (gitignored)
-└── tests/
+│   ├── agents/             # 5 agents (forecasting w/ MA→SES→Holt-Winters tiers)
+│   ├── simulation/         # Environment, baseline env, replay, drift injector
+│   ├── baselines/          # Static ROP, Periodic Forecasting (EOQ Q*)
+│   ├── drift/              # ADWIN, PELT detectors
+│   ├── metrics/            # Stockout, cost, MAPE, adaptability, summary
+│   ├── data/               # Olist preprocessing pipeline
+│   └── utils/              # Config, seeding (per-seed initial-stock jitter)
+├── experiments/            # YAML configs + run / sweep / aggregate / stats
+│   ├── run.py              # Single-run dispatcher
+│   ├── sweep.py            # Multi-seed orchestrator
+│   ├── aggregate.py        # Per-cell mean ± 95% CI
+│   ├── stats.py            # Mann-Whitney U, Welch's t, Cohen's d
+│   ├── h1_report.py        # H1 across (scenario × baseline × metric)
+│   ├── h3_report.py        # H3 power-law + linear fits
+│   ├── ablation_report.py  # Component-deletion deltas
+│   ├── compare.py          # Terminal side-by-side comparison
+│   └── configs/            # All experiment configs (YAML)
+├── notebooks/              # Olist exploration + result analysis
+├── results/                # Per-run summary.json, timeseries.csv, aggregates
+└── tests/                  # pytest (23 tests, all passing)
 ```
 
 ## Dataset

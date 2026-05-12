@@ -1,0 +1,77 @@
+# Inventory MAS — Dokploy / Docker Compose deployment.
+#
+#   docker compose up -d --build    # start the stack
+#   docker compose logs -f          # tail logs
+#   docker compose down             # stop + clean up containers
+#
+# Volumes:
+#   results-data  — persistent sweep outputs (mounted into the backend so
+#                   the launcher can write new runs and the ingester can
+#                   pick them up).
+#   db-data       — persistent SQLite database file.
+#
+# Configurable via environment (or .env file). See `.env.production.example`
+# for the canonical variable set.
+#
+# Reverse proxy:
+#   On Dokploy, configure Domains in the UI; Dokploy's Traefik will route
+#   `app.domain` -> frontend:3000 and `api.domain` -> backend:8000.
+#   On a bare VM, see DEPLOY_VM.md for a Caddy reverse-proxy template.
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: inventory-mas-backend
+    restart: unless-stopped
+    environment:
+      MAS_API_HOST: "0.0.0.0"
+      MAS_API_PORT: "8000"
+      MAS_CORS_ORIGINS: "${MAS_CORS_ORIGINS:-http://localhost:3000}"
+      MAS_ALLOW_RUN_LAUNCH: "${MAS_ALLOW_RUN_LAUNCH:-true}"
+      MAS_MAX_QUEUED_RUNS: "${MAS_MAX_QUEUED_RUNS:-3}"
+      MAS_MAX_CONCURRENT_RUNS: "${MAS_MAX_CONCURRENT_RUNS:-1}"
+      MAS_DATABASE_URL: "sqlite+aiosqlite:////data/db/inventory_mas.db"
+      MAS_SYNC_DATABASE_URL: "sqlite:////data/db/inventory_mas.db"
+      MAS_EMIT_DECISIONS: "${MAS_EMIT_DECISIONS:-1}"
+      MAS_PROJECT_ROOT: "/app"
+    volumes:
+      - results-data:/app/results
+      - db-data:/data/db
+    expose:
+      - "8000"
+    # Host port exposed for non-Dokploy hosts. Dokploy routes via Traefik
+    # on its private network and ignores this; harmless to keep.
+    ports:
+      - "${BACKEND_HOST_PORT:-8000}:8000"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request, sys; sys.exit(0 if urllib.request.urlopen('http://localhost:8000/api/health').status == 200 else 1)"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+      args:
+        # Baked into the Next.js client bundle at build time. Browsers use
+        # this for absolute API paths + WebSocket URLs.
+        NEXT_PUBLIC_API_URL: "${NEXT_PUBLIC_API_URL:-http://localhost:8000}"
+    container_name: inventory-mas-frontend
+    restart: unless-stopped
+    environment:
+      NEXT_PUBLIC_API_URL: "${NEXT_PUBLIC_API_URL:-http://localhost:8000}"
+    expose:
+      - "3000"
+    ports:
+      - "${FRONTEND_HOST_PORT:-3000}:3000"
+    depends_on:
+      backend:
+        condition: service_healthy
+
+volumes:
+  results-data:
+  db-data:
