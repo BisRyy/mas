@@ -21,6 +21,7 @@ const NAV = [
   { href: "/compare", label: "Comparison", Icon: GitCompare },
   { href: "/decisions", label: "Decision audit", Icon: Search },
   { href: "/reports/h1", label: "H1 — Performance", Icon: BarChart3 },
+  { href: "/reports/h2", label: "H2 — Cost-efficiency", Icon: BarChart3 },
   { href: "/reports/h3", label: "H3 — Scalability", Icon: Activity },
   { href: "/reports/ablation", label: "Ablation", Icon: Beaker },
   { href: "/runs", label: "Runs", Icon: ScrollText },

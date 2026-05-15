@@ -60,7 +60,7 @@ export default function OverviewPage() {
             verdict="Reframed (cost-of-service)"
             tone="warn"
             detail="Both adaptive policies stay above 99% SL. Substantive finding: MAS achieves equivalent SL at 53–70% less inventory cost."
-            link="/reports/h1"
+            link="/reports/h2"
           />
           <VerdictCard
             tag="H3"
