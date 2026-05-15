@@ -5,7 +5,14 @@
 FROM node:20-alpine AS deps
 WORKDIR /app
 COPY frontend/package.json frontend/package-lock.json* ./
-RUN if [ -f package-lock.json ]; then npm ci; else npm install; fi
+# --legacy-peer-deps is required because react-plotly.js@2.x declares its
+# React peer range as ^16 || ^17 || ^18, predating the React 19 release.
+# The library works fine with React 19; the peer range is just stale.
+RUN if [ -f package-lock.json ]; then \
+        npm ci --legacy-peer-deps; \
+    else \
+        npm install --legacy-peer-deps; \
+    fi
 
 FROM node:20-alpine AS builder
 WORKDIR /app
