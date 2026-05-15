@@ -27,6 +27,36 @@ const STATUS_COLOR: Record<string, string> = {
   failed: "text-rose-400",
 };
 
+
+/**
+ * Build the WebSocket URL for /api/runs/{id}/stream.
+ *
+ * Avoids two failure modes:
+ *   1. Local dev: Next.js's HTTP rewrites do NOT proxy WS upgrades, so
+ *      we can't go through :3000. Use NEXT_PUBLIC_API_URL (set in
+ *      .env.local) which points at the backend on :8000.
+ *   2. Production behind HTTPS: if the page is https:// then the WS
+ *      must be wss:// or the browser blocks it as mixed content.
+ *
+ * If NEXT_PUBLIC_API_URL is unset we fall back to a heuristic: when the
+ * page is on :3000 the backend is probably on :8000 of the same host.
+ */
+function buildWebSocketUrl(jobId: string): string {
+  const explicit = process.env.NEXT_PUBLIC_API_URL;
+  if (explicit) {
+    const url = new URL(explicit);
+    const proto = url.protocol === "https:" ? "wss:" : "ws:";
+    return `${proto}//${url.host}/api/runs/${jobId}/stream`;
+  }
+  const proto = window.location.protocol === "https:" ? "wss:" : "ws:";
+  let host = window.location.host;
+  if (host.endsWith(":3000")) {
+    host = host.replace(":3000", ":8000");
+  }
+  return `${proto}//${host}/api/runs/${jobId}/stream`;
+}
+
+
 export default function RunDetailPage({
   params,
 }: {
@@ -39,21 +69,53 @@ export default function RunDetailPage({
   const [total, setTotal] = useState(0);
   const [status, setStatus] = useState<string>("connecting");
   const [error, setError] = useState<string | null>(null);
+  const [transport, setTransport] = useState<"ws" | "polling">("ws");
   const wsRef = useRef<WebSocket | null>(null);
 
-  const meta = useQuery({
-    queryKey: ["run", id],
+  const isTerminal = status === "succeeded" || status === "failed";
+
+  // HTTP polling — runs always at slow cadence, faster when we've fallen
+  // back from WebSocket. Drives state updates either way so the UI keeps
+  // working without WS.
+  const poll = useQuery({
+    queryKey: ["run", id, transport],
     queryFn: () => api.getRun(id),
-    refetchInterval: status === "succeeded" || status === "failed" ? false : 5000,
+    refetchInterval: isTerminal ? false : transport === "polling" ? 2000 : 5000,
   });
 
   useEffect(() => {
-    const proto = window.location.protocol === "https:" ? "wss:" : "ws:";
-    const backendHost = process.env.NEXT_PUBLIC_API_URL
-      ? new URL(process.env.NEXT_PUBLIC_API_URL).host
-      : window.location.host;
-    const ws = new WebSocket(`${proto}//${backendHost}/api/runs/${id}/stream`);
+    if (!poll.data) return;
+    setStatus(poll.data.status);
+    setPct(poll.data.progress_pct);
+    setCompleted(poll.data.completed_seeds);
+    setTotal(poll.data.total_seeds);
+    if (poll.data.error) setError(poll.data.error);
+    if (poll.data.log_tail) setLogs(poll.data.log_tail.split("\n"));
+  }, [poll.data]);
+
+  useEffect(() => {
+    if (transport !== "ws") return;
+
+    const wsUrl = buildWebSocketUrl(id);
+    let ws: WebSocket;
+    try {
+      ws = new WebSocket(wsUrl);
+    } catch (e) {
+      setTransport("polling");
+      setError(
+        `WebSocket construction failed (${(e as Error).message}); ` +
+        `falling back to HTTP polling.`,
+      );
+      return;
+    }
     wsRef.current = ws;
+
+    let opened = false;
+
+    ws.onopen = () => {
+      opened = true;
+      setError(null);
+    };
 
     ws.onmessage = (evt) => {
       const m = JSON.parse(evt.data) as Event;
@@ -65,32 +127,58 @@ export default function RunDetailPage({
         if (m.log_tail) setLogs(m.log_tail.split("\n"));
         if (m.error) setError(m.error);
       } else if (m.type === "status") {
-        setStatus(m.status ?? status);
+        if (m.status) setStatus(m.status);
         if (m.error) setError(m.error);
       } else if (m.type === "progress") {
-        setPct(m.pct ?? pct);
-        setCompleted(m.completed ?? completed);
-        setTotal(m.total ?? total);
+        if (m.pct !== undefined) setPct(m.pct);
+        if (m.completed !== undefined) setCompleted(m.completed);
+        if (m.total !== undefined) setTotal(m.total);
       } else if (m.type === "log" && m.line) {
         setLogs((cur) => [...cur, m.line!].slice(-500));
       } else if (m.type === "error" && m.message) {
         setError(m.message);
       }
     };
-    ws.onerror = () => setError("WebSocket connection error");
 
-    return () => ws.close();
+    ws.onerror = () => {
+      if (!opened) {
+        setTransport("polling");
+        setError(
+          `Live WebSocket unavailable on ${wsUrl}. Falling back to HTTP polling.\n` +
+          `Hint: ensure NEXT_PUBLIC_API_URL points at the backend host:port. ` +
+          `Current: ${process.env.NEXT_PUBLIC_API_URL ?? "<unset>"}`,
+        );
+      }
+    };
+
+    ws.onclose = () => {
+      if (!opened) {
+        setTransport("polling");
+      } else if (!isTerminal) {
+        setTransport("polling");
+        setError("Live connection dropped — switched to HTTP polling.");
+      }
+    };
+
+    return () => {
+      try { ws.close(); } catch {}
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]);
+  }, [id, transport]);
 
   return (
     <div className="space-y-6">
       <header>
         <Link href="/runs" className="text-sm">← All runs</Link>
         <h1 className="mt-1 font-mono text-2xl font-bold">Run {id.slice(0, 8)}…</h1>
-        {meta.data && (
+        {poll.data && (
           <p className="text-ink-muted">
-            <span className="font-mono">{meta.data.config_name}</span> · seeds {meta.data.seeds_csv}
+            <span className="font-mono">{poll.data.config_name}</span> · seeds {poll.data.seeds_csv}
+            {" · "}
+            <span className="text-xs uppercase tracking-wider">
+              transport: {transport}
+              {transport === "polling" && " (2 s)"}
+            </span>
           </p>
         )}
       </header>
@@ -124,7 +212,7 @@ export default function RunDetailPage({
       </div>
 
       {error && (
-        <div className="card border-rose-700 bg-rose-950/30 text-sm text-rose-300">
+        <div className="card border-amber-700 bg-amber-950/30 text-sm text-amber-300 whitespace-pre-line">
           {error}
         </div>
       )}
