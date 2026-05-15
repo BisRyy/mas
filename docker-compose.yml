@@ -64,7 +64,15 @@ services:
     container_name: inventory-mas-frontend
     restart: unless-stopped
     environment:
+      # Baked into the client bundle for the WebSocket URL only — the
+      # browser uses this for `wss://...` connections that Next.js
+      # rewrites cannot proxy.
       NEXT_PUBLIC_API_URL: "${NEXT_PUBLIC_API_URL:-http://localhost:8000}"
+      # Runtime-only (NOT baked into the client) — used by Next.js's
+      # server-side rewrite to reach the backend over the Docker network
+      # instead of hairpinning out through Traefik. Must use the service
+      # name `backend` and the container port, NOT the public hostname.
+      INTERNAL_API_URL: "${INTERNAL_API_URL:-http://backend:8000}"
     expose:
       - "3000"
     # No `ports:` — see note on backend service above.
