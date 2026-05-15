@@ -181,6 +181,11 @@ export default function AboutPage() {
             title="Launch a run"
             body="Re-run any configuration; results stream live into the catalog."
           />
+          <LinkCard
+            href="/glossary"
+            title="Glossary"
+            body="Every abbreviation, scenario code, metric, and stat term defined."
+          />
         </div>
       </Section>
 
