@@ -1,0 +1,44 @@
+{
+  "n_steps": 504,
+  "stockout_rate": 0.03571428571428571,
+  "stockout_duration_per_sku": {
+    "0a57f7d2c983bcf8188589a5fea4a8da": 1,
+    "b5e13c9a353102f79c6206ff5cb61a50": 1,
+    "54d9ac713e253fa1fae9c8003b011c2a": 4,
+    "5411e9269501a870cabf632f05655131": 2,
+    "3f14d740544f37ece8a9e7bc8349797e": 1,
+    "e53e557d5a159f5aa2c5e995dfdf244b": 3,
+    "437c05a395e9e47f9762e677a7068ce7": 1,
+    "962a6951154f98f2c8e9a5b8b2bcf4a9": 1,
+    "53b36df67ebb7c41585e8d54d6772e08": 4,
+    "2fea0f2cec6b6324a277d4a61c2ed2c6": 1,
+    "e7cc48a9daff5436f63d3aad9426f28b": 1
+  },
+  "final_total_on_hand": 10815,
+  "n_orders": 1340,
+  "total_units_ordered": 18417,
+  "forecast_mape": 0.39334526853958,
+  "n_drift_events": 0,
+  "n_global_drift_events": 1,
+  "n_refits": 3096,
+  "active_model_methods": {
+    "ma": 12,
+    "ses": 126,
+    "hw": 62
+  },
+  "policy": "mas",
+  "fit_window": 90,
+  "config": "experiments/configs/olist_mas_abrupt.yaml",
+  "holding_cost": 45726.950000000004,
+  "ordering_cost": 67000.0,
+  "stockout_cost": 100.0,
+  "total_cost": 112826.95000000001,
+  "cost_weights": {
+    "holding": 0.01,
+    "ordering": 50.0,
+    "stockout": 5.0
+  },
+  "drift_start_step": 280,
+  "time_to_recovery_steps": 0,
+  "mean_service_level_post_drift": 0.9999363057324842
+}

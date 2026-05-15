@@ -1,0 +1,43 @@
+{
+  "n_steps": 504,
+  "stockout_rate": 0.15873015873015872,
+  "stockout_duration_per_sku": {
+    "473795a355d29305c3ea6b156833adf5": 1,
+    "d5991653e037ccb7af6ed7d94246b249": 1,
+    "d3c044bd42d84a79e3b0c42662806a48": 2,
+    "368c6c730842d78016ad823897a372db": 2,
+    "362b773250263786dd58670d2df42c3b": 4,
+    "ec2d43cc59763ec91694573b31f1c29a": 3,
+    "bee2e070c39f3dd2f6883a17a5f0da45": 4,
+    "5a848e4ab52fd5445cdc07aab1c40e48": 11,
+    "a62e25e09e05e6faf31d90c6ec1aa3d1": 5,
+    "54d9ac713e253fa1fae9c8003b011c2a": 3,
+    "3dd2a17168ec895c781a9191c1e95ad7": 16,
+    "3f14d740544f37ece8a9e7bc8349797e": 7,
+    "c9c6fde711572c1ad99ca12728c6af00": 10,
+    "dbb67791e405873b259e4656bf971246": 5,
+    "0d85c435fd60b277ffb9e9b0f88f927a": 1,
+    "437c05a395e9e47f9762e677a7068ce7": 16,
+    "e7cc48a9daff5436f63d3aad9426f28b": 14
+  },
+  "final_total_on_hand": 68185,
+  "n_orders": 700,
+  "total_units_ordered": 80738,
+  "policy": "periodic_forecasting",
+  "seed": 2,
+  "fit_window": 90,
+  "n_skus_used": 100,
+  "runtime_seconds": 3.5244440829992527,
+  "time_per_step_ms": 6.992944609125502,
+  "peak_python_mem_mb": 0.604400634765625,
+  "delta_rss_mb": 0.0,
+  "holding_cost": 265205.44,
+  "ordering_cost": 35000.0,
+  "stockout_cost": 525.0,
+  "total_cost": 300730.44,
+  "cost_weights": {
+    "holding": 0.01,
+    "ordering": 50.0,
+    "stockout": 5.0
+  }
+}

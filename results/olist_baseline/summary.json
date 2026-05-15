@@ -1,0 +1,34 @@
+{
+  "n_steps": 504,
+  "stockout_rate": 0.04563492063492063,
+  "stockout_duration_per_sku": {
+    "0a57f7d2c983bcf8188589a5fea4a8da": 1,
+    "389d119b48cf3043d311335e499d9c6b": 1,
+    "53759a2ecddad2bb87a079a1f1519f73": 2,
+    "b5e13c9a353102f79c6206ff5cb61a50": 1,
+    "aca2eb7d00ea1a7b8ebd4e68314663af": 3,
+    "54d9ac713e253fa1fae9c8003b011c2a": 4,
+    "5411e9269501a870cabf632f05655131": 2,
+    "3f14d740544f37ece8a9e7bc8349797e": 1,
+    "437c05a395e9e47f9762e677a7068ce7": 1,
+    "962a6951154f98f2c8e9a5b8b2bcf4a9": 1,
+    "53b36df67ebb7c41585e8d54d6772e08": 4,
+    "2fea0f2cec6b6324a277d4a61c2ed2c6": 1,
+    "e7cc48a9daff5436f63d3aad9426f28b": 1
+  },
+  "final_total_on_hand": 8879,
+  "n_orders": 1165,
+  "total_units_ordered": 16281,
+  "policy": "mas",
+  "fit_window": 90,
+  "config": "experiments/configs/olist_baseline.yaml",
+  "holding_cost": 39301.520000000004,
+  "ordering_cost": 58250.0,
+  "stockout_cost": 115.0,
+  "total_cost": 97666.52,
+  "cost_weights": {
+    "holding": 0.01,
+    "ordering": 50.0,
+    "stockout": 5.0
+  }
+}

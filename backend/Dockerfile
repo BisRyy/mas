@@ -31,11 +31,18 @@ COPY src /app/src
 COPY experiments /app/experiments
 COPY scripts /app/scripts
 COPY data /app/data
-COPY results /app/results
 COPY backend /app/backend
+
+# Canonical thesis results are baked into a *baseline* path so the
+# runtime entrypoint can sync them into the `results-data` named volume
+# (which would otherwise shadow /app/results). See backend/entrypoint.sh.
+COPY results /app/results-baseline
 
 ENV PYTHONPATH=/app
 
 EXPOSE 8000
 
+COPY backend/entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 CMD ["uvicorn", "backend.app.main:app", "--host", "0.0.0.0", "--port", "8000"]

@@ -18,16 +18,18 @@ env/
 .idea/
 .DS_Store
 
-# Data — keep folders, ignore contents
+# Data — raw Olist CSVs are too large for git (120 MB); upload once
+# to the deployed volume or regenerate locally with `make download-data`.
 data/raw/*
-data/processed/*
 !data/raw/.gitkeep
-!data/processed/.gitkeep
-!data/README.md
+!data/raw/README.md
+# data/processed/ IS committed — small (~3 MB) and required for the
+# simulator to run inside the container without re-preprocessing.
 
-# Run outputs
-results/*
-!results/.gitkeep
+# Run outputs — canonical thesis results ARE committed so the deployed
+# dashboard matches the manuscript out of the box. New runs land in the
+# `results-data` named volume and are not tracked here.
+.DS_Store
 
 # Notebook checkpoints
 .ipynb_checkpoints/
