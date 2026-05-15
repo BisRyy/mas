@@ -42,11 +42,18 @@ export default function H3ReportPage() {
 
   return (
     <div className="space-y-6">
-      <header>
-        <h1 className="text-2xl font-bold">H3 — Scalability report</h1>
+      <header className="space-y-1">
+        <h1 className="text-2xl font-bold">H3 &mdash; Scalability report</h1>
         <p className="text-ink-muted">
-          Power-law fit (<code>t = a · n^b</code>) of wall-clock runtime
-          against SKU cohort size.
+          Does per-step runtime grow faster than linear with the number of
+          SKUs? We fit a power law <code>t = a · n<sup>b</sup></code> to
+          per-step runtime measurements across cohort sizes (50, 100, 200,
+          500, 1000 SKUs, 10 seeds each) for each policy, then classify the
+          exponent <em>b</em>: <code>&lt; 1</code> sub-linear,{" "}
+          <code>≈ 1</code> linear, <code>&gt; 1</code> super-linear. The
+          per-policy table reports <em>b</em>, the coefficient <em>a</em>, the
+          fit&apos;s R<sup>2</sup>, and the resulting classification; the
+          scatter below overlays raw points with each fit line.
         </p>
       </header>
 

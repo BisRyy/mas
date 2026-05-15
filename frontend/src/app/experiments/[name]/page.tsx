@@ -74,7 +74,7 @@ export default function ExperimentDetailPage({
 
   return (
     <div className="space-y-6">
-      <header>
+      <header className="space-y-1">
         <Link href="/experiments" className="text-sm">
           ← All experiments
         </Link>
@@ -83,6 +83,12 @@ export default function ExperimentDetailPage({
           <span className={`policy-dot ${policy}`} />
           {policyLabel(policy)} · scenario <span className="font-medium">{detail.data.scenario}</span> ·
           {" "}{detail.data.n_seeds} seeds · family {detail.data.family.toUpperCase()}
+        </p>
+        <p className="text-xs text-ink-subtle">
+          One sweep. Cards below are means across all seeds with 95% CI where
+          available; the table lists each seed&apos;s individual outcome.
+          Click a seed to drill into its timeseries, full summary JSON, and
+          (if emitted) decision audit log.
         </p>
       </header>
 

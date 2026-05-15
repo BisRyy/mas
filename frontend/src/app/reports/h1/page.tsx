@@ -11,11 +11,22 @@ export default function H1ReportPage() {
 
   return (
     <div className="space-y-6">
-      <header>
-        <h1 className="text-2xl font-bold">H1 — Performance report</h1>
+      <header className="space-y-1">
+        <h1 className="text-2xl font-bold">H1 &mdash; Performance report</h1>
         <p className="text-ink-muted">
-          MAS vs baselines across every drift scenario. Mann–Whitney U
-          (primary), Welch&apos;s t, Cohen&apos;s d. N = 10 seeds per cell.
+          For each drift scenario (no_drift, gradual, seasonal, abrupt,
+          severe_abrupt, catastrophic) we compare the MAS policy against each
+          baseline (Static ROP, Periodic Forecasting) on two outcomes:
+          stockout rate (service failure) and total cost (the sum of holding,
+          ordering, and stockout penalties). Each cell pools 10 seed
+          replications.
+        </p>
+        <p className="text-xs text-ink-subtle">
+          Significance is tested with Mann&ndash;Whitney U as the primary
+          (non-parametric, our seed distributions aren&apos;t normal), Welch&apos;s t
+          as a parametric cross-check, and Cohen&apos;s d for effect size.
+          Bolded rows in the tables below indicate Mann&ndash;Whitney{" "}
+          <em>p</em> &lt; 0.05.
         </p>
       </header>
 

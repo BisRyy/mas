@@ -168,7 +168,7 @@ export default function RunDetailPage({
 
   return (
     <div className="space-y-6">
-      <header>
+      <header className="space-y-1">
         <Link href="/runs" className="text-sm">← All runs</Link>
         <h1 className="mt-1 font-mono text-2xl font-bold">Run {id.slice(0, 8)}…</h1>
         {poll.data && (
@@ -181,6 +181,15 @@ export default function RunDetailPage({
             </span>
           </p>
         )}
+        <p className="text-xs text-ink-subtle">
+          Live progress for one sweep job. Status, completed-seeds counter,
+          and the worker&apos;s stdout/stderr stream in real time over
+          WebSocket when available; if the WS upgrade fails (e.g. behind a
+          proxy that strips it) the page falls back to 2&nbsp;s HTTP polling
+          automatically. When the job lands in <em>succeeded</em>, its results
+          ingest into the catalog and the experiment becomes browsable on
+          every other page.
+        </p>
       </header>
 
       <div className="card grid grid-cols-2 gap-4 md:grid-cols-4">

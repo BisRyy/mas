@@ -13,11 +13,21 @@ export default function DecisionsIndexPage() {
 
   return (
     <div className="space-y-6">
-      <header>
+      <header className="space-y-1">
         <h1 className="text-2xl font-bold">Decision audit</h1>
         <p className="text-ink-muted">
-          Trace every recorded agent action. Pick an experiment + seed to see
-          the per-step, per-SKU decision log.
+          Full audit trail of every agent action in a simulation. When MAS is
+          run with <code className="rounded bg-bg-elevated px-1 py-0.5 text-xs font-mono">MAS_EMIT_DECISIONS=1</code>{" "}
+          (the deployment default), each step, each agent, each SKU produces a
+          structured event with its inputs and outputs &mdash; the inventory
+          equivalent of an event-sourced ledger. Use this view to answer
+          questions like &quot;why did the replenishment agent order 50 units
+          of SKU X at step 73?&quot; with the literal log line that decided it.
+        </p>
+        <p className="text-xs text-ink-subtle">
+          Pick an experiment below, then a seed, to open the per-step log
+          (paginated). Each H1 experiment has 10 seeds; not every sweep emits
+          decisions &mdash; only those with the emit flag set at run time.
         </p>
       </header>
 

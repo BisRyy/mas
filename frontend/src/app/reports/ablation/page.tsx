@@ -9,11 +9,23 @@ export default function AblationReportPage() {
 
   return (
     <div className="space-y-6">
-      <header>
+      <header className="space-y-1">
         <h1 className="text-2xl font-bold">Ablation report</h1>
         <p className="text-ink-muted">
-          Component-removal study on the catastrophic scenario (N = 10 seeds
-          per variant). Δ columns are relative to the <em>full</em> MAS.
+          Which architectural components actually carry MAS performance? We
+          run the full MAS plus three lesioned variants &mdash; ADWIN drift
+          detection removed, dynamic safety stock removed, and forecaster
+          held at the simplest tier (MA only) &mdash; on the catastrophic
+          scenario (10 seeds per variant) and measure how much each removal
+          degrades stockout rate, total cost, MAPE, and the drift-event
+          count.
+        </p>
+        <p className="text-xs text-ink-subtle">
+          <em>Δ vs full</em> columns are percent-relative to the full MAS row,
+          so a positive Δ on stockout or cost means the lesion makes things
+          worse. Near-zero Δ would suggest the removed component isn&apos;t
+          pulling its weight; a large Δ is evidence the component is
+          essential.
         </p>
       </header>
 

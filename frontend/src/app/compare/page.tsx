@@ -42,11 +42,18 @@ export default function ComparePage() {
 
   return (
     <div className="space-y-6">
-      <header>
+      <header className="space-y-1">
         <h1 className="text-2xl font-bold">Comparison</h1>
         <p className="text-ink-muted">
-          Pick any number of experiments. The dashboard overlays their seed-1
-          timeseries and lists summary metrics side by side.
+          Side-by-side view of multiple experiments. Pick any combination of
+          configurations &mdash; usually one MAS run plus one or more baselines
+          for the same scenario &mdash; and the dashboard overlays their
+          seed-1 inventory and stockout trajectories on a shared time axis,
+          then lists their aggregate metrics in a single table.
+        </p>
+        <p className="text-xs text-ink-subtle">
+          Defaults to the three catastrophic-scenario policies. Use this view
+          to visually verify the H1 claims in <em>/reports/h1</em>.
         </p>
       </header>
 

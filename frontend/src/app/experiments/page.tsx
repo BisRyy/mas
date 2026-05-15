@@ -50,12 +50,19 @@ export default function ExperimentsPage() {
 
   return (
     <div className="space-y-6">
-      <header>
+      <header className="space-y-1">
         <h1 className="text-2xl font-bold">Experiment catalog</h1>
         <p className="text-ink-muted">
-          {rows.length} experiments shown.
+          Every sweep that has been ingested into the database. Each row is one
+          configuration (policy × scenario × cohort size) and aggregates across
+          its N seeds. Filter by <em>family</em> (H1 / H3 / ablation) or
+          <em> policy</em>, search by name, sort by any column. Click a row to
+          drill into per-seed timeseries and the raw summary JSON.
+        </p>
+        <p className="text-xs text-ink-subtle">
+          Showing {rows.length}
           {q.data && q.data.length !== rows.length &&
-            ` (${q.data.length} total before filter)`}
+            ` of ${q.data.length} total`} experiments.
         </p>
       </header>
 

@@ -51,12 +51,21 @@ export default function NewRunPage() {
 
   return (
     <div className="space-y-6">
-      <header>
+      <header className="space-y-1">
         <h1 className="text-2xl font-bold">Launch new run</h1>
         <p className="text-ink-muted">
-          Pick a config, list one or more seeds, and (optionally) override any
-          top-level YAML key (e.g., <code>{"{\"lead_time\": 14}"}</code>). The
-          job is queued and runs in the background.
+          Spawn a fresh sweep on the server. Pick one of the YAML configs
+          shipped in <code>experiments/configs/</code>, list the seeds you
+          want to run (e.g. <code>1,2,3</code> or <code>101..110</code>), and
+          optionally override any top-level YAML key from the config
+          (e.g. <code>{"{\"lead_time\": 14}"}</code>) without editing the file.
+        </p>
+        <p className="text-xs text-ink-subtle">
+          The job is enqueued (bounded by <code>MAS_MAX_QUEUED_RUNS</code>,
+          executed by <code>MAS_MAX_CONCURRENT_RUNS</code> workers) and runs
+          in the background. You&apos;ll be redirected to a live progress view
+          where the log streams over WebSocket; results auto-ingest on
+          completion and appear in <em>/experiments</em>.
         </p>
       </header>
 

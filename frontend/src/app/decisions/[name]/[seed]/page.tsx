@@ -51,7 +51,7 @@ export default function DecisionViewerPage({
 
   return (
     <div className="space-y-6">
-      <header>
+      <header className="space-y-1">
         <Link href="/decisions" className="text-sm">← Decision audit</Link>
         <h1 className="mt-1 font-mono text-2xl font-bold">{name} · seed {seedNum}</h1>
         {meta.data && (
@@ -60,6 +60,14 @@ export default function DecisionViewerPage({
             {" "}{meta.data.n_global_drift_events} global drift events
           </p>
         )}
+        <p className="text-xs text-ink-subtle">
+          Step-by-step ledger for one seed. Filter by agent, action type, SKU,
+          or step range. Each row is one structured event emitted by an agent
+          &mdash; expand <em>details</em> to see the full input/output JSON.
+          Use this view to answer per-decision &quot;why&quot; questions
+          (which forecast informed an order, when ADWIN fired and what it
+          observed, why safety stock changed).
+        </p>
       </header>
 
       {noDecisions && (

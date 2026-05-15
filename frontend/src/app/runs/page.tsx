@@ -22,14 +22,20 @@ export default function RunsPage() {
 
   return (
     <div className="space-y-6">
-      <header className="flex items-end justify-between">
-        <div>
+      <header className="flex items-end justify-between gap-4">
+        <div className="space-y-1">
           <h1 className="text-2xl font-bold">Runs</h1>
           <p className="text-ink-muted">
-            History of user-launched sweeps. Auto-refreshes every 3 s.
+            History of sweeps launched from the dashboard (as opposed to
+            canonical experiments seeded with the deployment). Each row is one
+            job &mdash; one config × one or more seeds &mdash; with live status,
+            progress, and a link to the streaming log. Queued and running jobs
+            move through <em>queued → running → succeeded</em> (or{" "}
+            <em>failed</em>); finished jobs flow into the catalog and become
+            queryable on every other page. Auto-refreshes every 3 seconds.
           </p>
         </div>
-        <Link href="/runs/new" className="rounded-md bg-accent px-4 py-2 text-sm font-semibold text-white hover:bg-accent-muted">
+        <Link href="/runs/new" className="shrink-0 rounded-md bg-accent px-4 py-2 text-sm font-semibold text-white hover:bg-accent-muted">
           + Launch new run
         </Link>
       </header>
