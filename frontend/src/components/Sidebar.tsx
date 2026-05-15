@@ -3,12 +3,15 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
-  Activity, BarChart3, Beaker, FlaskConical, GitCompare, LayoutDashboard,
-  PlayCircle, Search, ScrollText, Settings,
+  Activity, BarChart3, Beaker, FlaskConical, Github, GitCompare,
+  Info, LayoutDashboard, PlayCircle, Search, ScrollText, Settings,
 } from "lucide-react";
+
+const GITHUB_URL = "https://github.com/BisRyy/mas";
 
 const NAV = [
   { href: "/", label: "Overview", Icon: LayoutDashboard },
+  { href: "/about", label: "About", Icon: Info },
   { href: "/experiments", label: "Experiments", Icon: FlaskConical },
   { href: "/compare", label: "Comparison", Icon: GitCompare },
   { href: "/decisions", label: "Decision audit", Icon: Search },
@@ -49,7 +52,7 @@ export function Sidebar() {
           );
         })}
       </nav>
-      <div className="border-t border-border px-5 py-3">
+      <div className="space-y-2 border-t border-border px-5 py-3">
         <Link
           href="/settings"
           className="flex items-center gap-2 text-xs text-ink-subtle hover:text-ink"
@@ -57,6 +60,15 @@ export function Sidebar() {
           <Settings size={14} />
           Settings
         </Link>
+        <a
+          href={GITHUB_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center gap-2 text-xs text-ink-subtle hover:text-ink"
+        >
+          <Github size={14} />
+          GitHub
+        </a>
       </div>
     </aside>
   );
