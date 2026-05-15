@@ -86,6 +86,47 @@ export const DecisionPageSchema = z.object({
 });
 export type DecisionPage = z.infer<typeof DecisionPageSchema>;
 
+export const SystemStatusSchema = z.object({
+  api: z.object({
+    version: z.string(),
+    uptime_seconds: z.number(),
+    process_started_at_unix: z.number(),
+  }),
+  database: z.object({
+    url_redacted: z.string(),
+    counts: z.object({
+      experiments: z.number(),
+      seeds: z.number(),
+      decisions: z.number(),
+      jobs: z.number(),
+    }),
+    last_ingest_at: z.string().nullable(),
+  }),
+  filesystem: z.object({
+    project_root: z.string(),
+    results_dir: z.string(),
+    results_size_bytes: z.number(),
+    configs_dir: z.string(),
+  }),
+  queue: z.object({
+    current_jobs: z.number(),
+    max_queued: z.number(),
+    max_concurrent: z.number(),
+  }),
+  policy: z.object({
+    allow_run_launch: z.boolean(),
+    cors_origins: z.array(z.string()),
+  }),
+});
+export type SystemStatus = z.infer<typeof SystemStatusSchema>;
+
+export const ReingestResultSchema = z.object({
+  ok: z.boolean(),
+  experiments: z.number(),
+  seeds: z.number(),
+  decisions: z.number(),
+});
+
 export const JobStatusSchema = z.object({
   id: z.string(),
   config_name: z.string(),
@@ -269,4 +310,9 @@ export const api = {
       method: "POST",
       body: JSON.stringify(payload),
     }),
+
+  // Meta / diagnostics
+  systemStatus: () => http("/api/_meta/status", SystemStatusSchema),
+  reingest: () =>
+    http("/api/_meta/reingest", ReingestResultSchema, { method: "POST" }),
 };

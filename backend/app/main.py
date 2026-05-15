@@ -11,6 +11,7 @@ from .config import get_settings
 from .database import SessionLocal, init_db
 from .routers import configs as configs_router
 from .routers import experiments as experiments_router
+from .routers import meta as meta_router
 from .routers import reports as reports_router
 from .routers import runs as runs_router
 from .routers import seeds as seeds_router
@@ -61,6 +62,7 @@ def create_app() -> FastAPI:
     app.include_router(reports_router.router)
     app.include_router(runs_router.router)
     app.include_router(configs_router.router)
+    app.include_router(meta_router.router)
 
     @app.get("/api/health", response_model=HealthCheck, tags=["meta"])
     async def health() -> HealthCheck:
