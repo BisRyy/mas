@@ -41,10 +41,11 @@ services:
       - db-data:/data/db
     expose:
       - "8000"
-    # Host port exposed for non-Dokploy hosts. Dokploy routes via Traefik
-    # on its private network and ignores this; harmless to keep.
-    ports:
-      - "${BACKEND_HOST_PORT:-8000}:8000"
+    # NOTE: no `ports:` mapping. On Dokploy, Traefik reaches the container
+    # via the internal Docker network using `expose:` + Domain labels set
+    # in the Dokploy UI. Publishing to the host would (a) bypass TLS and
+    # (b) collide with anything else bound to that port on the VM.
+    # For bare-VM deploys, see docker-compose.bare.override.yml.
     healthcheck:
       test: ["CMD", "python", "-c", "import urllib.request, sys; sys.exit(0 if urllib.request.urlopen('http://localhost:8000/api/health').status == 200 else 1)"]
       interval: 15s
@@ -66,8 +67,7 @@ services:
       NEXT_PUBLIC_API_URL: "${NEXT_PUBLIC_API_URL:-http://localhost:8000}"
     expose:
       - "3000"
-    ports:
-      - "${FRONTEND_HOST_PORT:-3000}:3000"
+    # No `ports:` — see note on backend service above.
     depends_on:
       backend:
         condition: service_healthy

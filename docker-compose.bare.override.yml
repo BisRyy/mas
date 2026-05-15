@@ -1,0 +1,18 @@
+# Bare-VM override — publish container ports on the host.
+#
+# Use only when you do NOT have Traefik / Dokploy fronting the stack and
+# you want to hit the services directly on the host's IP.
+#
+#   docker compose -f docker-compose.yml -f docker-compose.bare.override.yml up -d --build
+#
+# On Dokploy, do NOT include this file — Traefik will route via the
+# internal Docker network and host port mappings would collide with other
+# apps on the VM.
+
+services:
+  backend:
+    ports:
+      - "${BACKEND_HOST_PORT:-8000}:8000"
+  frontend:
+    ports:
+      - "${FRONTEND_HOST_PORT:-3000}:3000"
