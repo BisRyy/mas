@@ -1,18 +1,42 @@
 "use client";
 
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense, useEffect, useState } from "react";
 import { api } from "@/lib/api";
 
+// Next.js 15 requires useSearchParams() to be inside a Suspense boundary
+// so static prerendering can bail out gracefully when the query string
+// affects the rendered output. We export a thin Suspense wrapper and
+// move the real component below.
 export default function NewRunPage() {
+  return (
+    <Suspense fallback={<p className="text-ink-muted">Loading…</p>}>
+      <NewRunPageInner />
+    </Suspense>
+  );
+}
+
+function NewRunPageInner() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const configs = useQuery({
     queryKey: ["configs"],
     queryFn: api.listConfigs,
   });
 
-  const [configName, setConfigName] = useState<string>("");
+  // Prefill from `?config=<name>` when arriving from a deep link (e.g.
+  // the "Launch this experiment" CTA on the empty-state decisions page).
+  const initialConfig = searchParams.get("config") ?? "";
+  const [configName, setConfigName] = useState<string>(initialConfig);
+
+  // If the configs query resolves AFTER the page mounts and we have a
+  // ?config= that wasn't in the initial render, snap to it once.
+  useEffect(() => {
+    const fromUrl = searchParams.get("config");
+    if (fromUrl && !configName) setConfigName(fromUrl);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
   const [seedsText, setSeedsText] = useState<string>("1,2,3");
   const [overridesText, setOverridesText] = useState<string>("{}");
   const [error, setError] = useState<string>("");

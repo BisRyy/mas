@@ -49,6 +49,9 @@ export const SeedSummarySchema = z.object({
   n_drift_events: z.number().nullable(),
   n_global_drift_events: z.number().nullable(),
   n_refits: z.number().nullable(),
+  // 0 when the sweep was run without MAS_EMIT_DECISIONS=1. The backend
+  // always emits this field (defaults to 0), so it's required on the wire.
+  n_decisions: z.number(),
 });
 export type SeedSummary = z.infer<typeof SeedSummarySchema>;
 
@@ -202,6 +205,19 @@ export const api = {
 
   familyBreakdown: () =>
     http("/api/experiments/_stats/families", z.record(z.string(), z.number())),
+
+  decisionCoverage: () =>
+    http(
+      "/api/experiments/_stats/decision_coverage",
+      z.record(
+        z.string(),
+        z.object({
+          n_seeds: z.number(),
+          n_seeds_with_decisions: z.number(),
+          first_populated_seed: z.number().nullable(),
+        }),
+      ),
+    ),
 
   // Seeds
   listSeeds: (expName: string) =>

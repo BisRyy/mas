@@ -94,6 +94,10 @@ class SeedSummary(ORMModel):
     n_drift_events: Optional[int]
     n_global_drift_events: Optional[int]
     n_refits: Optional[int]
+    # How many decision events were ingested for this seed. 0 means the
+    # sweep was run without `MAS_EMIT_DECISIONS=1` and the audit log is
+    # not browsable for it.
+    n_decisions: int = 0
 
 
 class SeedDetail(SeedSummary):

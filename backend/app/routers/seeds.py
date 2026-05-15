@@ -33,10 +33,29 @@ async def list_seeds(
     db: AsyncSession = Depends(get_db),
 ):
     exp = await _resolve_experiment(name, db)
-    res = await db.execute(
+    # Compute decision counts per seed in a single query, then merge into
+    # the response. We avoid a per-row N+1 by doing one GROUP BY then a
+    # Python dict lookup. The count is included in the SeedSummary so
+    # callers can render an "audit log: yes/no" badge without a second
+    # round trip.
+    seeds_rows = (await db.execute(
         select(Seed).where(Seed.experiment_id == exp.id).order_by(Seed.seed_num)
+    )).scalars().all()
+
+    counts_rows = await db.execute(
+        select(Decision.seed_id, func.count(Decision.id))
+        .where(Decision.seed_id.in_([s.id for s in seeds_rows]))
+        .group_by(Decision.seed_id)
     )
-    return res.scalars().all()
+    n_decisions_by_seed = {sid: int(n) for sid, n in counts_rows.all()}
+
+    out: list[SeedSummary] = []
+    for s in seeds_rows:
+        summary = SeedSummary.model_validate(s, from_attributes=True)
+        # `n_decisions` defaults to 0 — only override when we have a hit.
+        summary.n_decisions = n_decisions_by_seed.get(s.id, 0)
+        out.append(summary)
+    return out
 
 
 @router.get("/{seed_num}", response_model=SeedDetail)

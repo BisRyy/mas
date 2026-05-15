@@ -8,7 +8,7 @@ from sqlalchemy import select, func
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from ..database import get_db
-from ..models import Experiment, Seed
+from ..models import Decision, Experiment, Seed
 from ..schemas import ExperimentDetail, ExperimentSummary, IngestionResult
 from ..services.ingestion import ingest_all
 
@@ -64,3 +64,43 @@ async def family_breakdown(db: AsyncSession = Depends(get_db)):
         .group_by(Experiment.family)
     )
     return {fam: count for fam, count in result.all()}
+
+
+@router.get("/_stats/decision_coverage")
+async def decision_coverage(db: AsyncSession = Depends(get_db)):
+    """Per-experiment audit-log coverage.
+
+    For each experiment returns the total seeds, how many of them have at
+    least one decision-log row, and the seed_num of one seed that has
+    data (so the UI can deep-link to a populated page rather than always
+    /seed_1 which may be empty). Powers the &#39;has audit log&#39;
+    badges and 'first populated seed' links on /decisions.
+    """
+    # Single round-trip: experiments LEFT JOIN seeds LEFT JOIN decisions,
+    # grouped by experiment + seed, then aggregated in Python.
+    rows = await db.execute(
+        select(
+            Experiment.id.label("exp_id"),
+            Experiment.config_name,
+            Seed.seed_num,
+            func.count(Decision.id).label("n_decisions"),
+        )
+        .select_from(Experiment)
+        .join(Seed, Seed.experiment_id == Experiment.id, isouter=True)
+        .join(Decision, Decision.seed_id == Seed.id, isouter=True)
+        .group_by(Experiment.id, Seed.seed_num)
+    )
+
+    out: dict[str, dict] = {}
+    for exp_id, name, seed_num, n_decisions in rows.all():
+        entry = out.setdefault(
+            name,
+            {"n_seeds": 0, "n_seeds_with_decisions": 0, "first_populated_seed": None},
+        )
+        if seed_num is not None:
+            entry["n_seeds"] += 1
+            if n_decisions and int(n_decisions) > 0:
+                entry["n_seeds_with_decisions"] += 1
+                if entry["first_populated_seed"] is None:
+                    entry["first_populated_seed"] = seed_num
+    return out
