@@ -13,13 +13,23 @@ time. The full JSON summary is also stored for completeness.
 """
 from __future__ import annotations
 
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional
 
 from sqlalchemy import (
     Column, DateTime, Float, ForeignKey, Index, Integer, JSON, String, Text,
 )
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
+
+
+def utcnow() -> datetime:
+    """Timezone-aware UTC `now()`.
+
+    Use this everywhere a timestamp is generated. `datetime.utcnow()` is
+    naive (no tzinfo), which serializes to JSON without a `Z` suffix and
+    is then misinterpreted as local time by JavaScript's `new Date(...)`.
+    """
+    return datetime.now(timezone.utc)
 
 
 class Base(DeclarativeBase):
@@ -57,9 +67,11 @@ class Experiment(Base):
     # Full aggregate JSON for everything else.
     aggregate_json: Mapped[Optional[dict]] = mapped_column(JSON)
 
-    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=utcnow,
+    )
     updated_at: Mapped[datetime] = mapped_column(
-        DateTime, default=datetime.utcnow, onupdate=datetime.utcnow
+        DateTime(timezone=True), default=utcnow, onupdate=utcnow,
     )
 
     seeds = relationship("Seed", back_populates="experiment", lazy="select",
@@ -95,7 +107,9 @@ class Seed(Base):
     # Path to the timeseries.csv on disk (relative to project root).
     timeseries_path: Mapped[Optional[str]] = mapped_column(String(500))
 
-    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=utcnow,
+    )
 
     experiment = relationship("Experiment", back_populates="seeds")
     decisions = relationship("Decision", back_populates="seed", lazy="select",
@@ -156,6 +170,8 @@ class Job(Base):
     # Optional parameter overrides applied to the base config.
     overrides_json: Mapped[Optional[dict]] = mapped_column(JSON)
 
-    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
-    started_at: Mapped[Optional[datetime]] = mapped_column(DateTime)
-    finished_at: Mapped[Optional[datetime]] = mapped_column(DateTime)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=utcnow,
+    )
+    started_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True))
+    finished_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True))

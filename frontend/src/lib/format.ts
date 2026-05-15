@@ -42,8 +42,41 @@ export function policyColor(p: string): string {
   }[p] ?? "#9ca3af";
 }
 
+/**
+ * Parse a backend timestamp into a Date.
+ *
+ * The backend stores naive UTC datetimes (SQLite has no tz support).
+ * After the schema serializer change they go out as `+00:00`-suffixed
+ * ISO strings, which `new Date(...)` handles correctly. For DB rows
+ * written before the fix landed — or any path that bypasses the
+ * serializer — the wire format may still be naive (no `Z`/`±HH:MM`),
+ * which `new Date(...)` would otherwise interpret as *local* time and
+ * shift every clock by the user's UTC offset. We append `Z`
+ * defensively so the cutover is seamless and idempotent.
+ */
+export function parseBackendDate(iso: string): Date {
+  // Already has a timezone marker (Z or ±HH:MM)? Use as-is.
+  if (/(?:Z|[+-]\d{2}:?\d{2})$/.test(iso)) {
+    return new Date(iso);
+  }
+  // Naive — assume UTC.
+  return new Date(iso + "Z");
+}
+
+/**
+ * Render a backend timestamp in the visitor's local timezone using the
+ * browser's locale. Use everywhere a date/time is shown to a human.
+ */
+export function localDateTime(iso: string | null | undefined): string {
+  if (!iso) return "—";
+  return parseBackendDate(iso).toLocaleString(undefined, {
+    dateStyle: "medium",
+    timeStyle: "short",
+  });
+}
+
 export function timeAgo(iso: string): string {
-  const d = new Date(iso);
+  const d = parseBackendDate(iso);
   const sec = (Date.now() - d.getTime()) / 1000;
   if (sec < 60) return "just now";
   if (sec < 3600) return `${Math.floor(sec / 60)} min ago`;

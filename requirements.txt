@@ -5,6 +5,12 @@ scipy>=1.13
 
 # Multi-agent simulation framework
 mesa>=2.3
+# Mesa 3.5+ eagerly imports its discrete_space module on `import mesa`,
+# which pulls in networkx unconditionally. We never use discrete_space,
+# but the import fires before we get a chance not to, so networkx is a
+# de-facto mandatory dependency even though the simulator never builds
+# a graph.
+networkx>=3.0
 
 # Forecasting
 statsmodels>=0.14

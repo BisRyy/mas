@@ -10,6 +10,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { api } from "@/lib/api";
+import { localDateTime, parseBackendDate } from "@/lib/format";
 
 export default function SettingsPage() {
   const qc = useQueryClient();
@@ -63,7 +64,10 @@ export default function SettingsPage() {
         <Row label="Uptime" value={formatDuration(s.api.uptime_seconds)} />
         <Row
           label="Started at"
-          value={new Date(s.api.process_started_at_unix * 1000).toLocaleString()}
+          value={new Date(s.api.process_started_at_unix * 1000).toLocaleString(
+            undefined,
+            { dateStyle: "medium", timeStyle: "short" },
+          )}
         />
         <Row label="Browser → API URL (WebSocket)" value={browserApi} mono />
       </Section>
@@ -86,7 +90,7 @@ export default function SettingsPage() {
           label="Last ingest"
           value={
             s.database.last_ingest_at
-              ? `${new Date(s.database.last_ingest_at).toLocaleString()} (${
+              ? `${localDateTime(s.database.last_ingest_at)} (${
                   timeSince(s.database.last_ingest_at)
                 } ago)`
               : "never"
@@ -227,7 +231,9 @@ function formatDuration(seconds: number): string {
 }
 
 function timeSince(iso: string): string {
-  const delta = Math.floor((Date.now() - new Date(iso).getTime()) / 1000);
+  const delta = Math.floor(
+    (Date.now() - parseBackendDate(iso).getTime()) / 1000,
+  );
   if (delta < 60) return `${delta}s`;
   if (delta < 3600) return `${Math.floor(delta / 60)}m`;
   if (delta < 86_400) return `${Math.floor(delta / 3600)}h`;

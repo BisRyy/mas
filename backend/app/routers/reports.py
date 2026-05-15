@@ -7,7 +7,7 @@ files when the simulator emitted them.
 from __future__ import annotations
 
 import json
-from datetime import datetime
+from datetime import datetime  # noqa: F401  (kept for re-export / typing)
 from pathlib import Path
 from typing import Any
 
@@ -16,6 +16,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from ..config import get_settings
 from ..database import get_db
+from ..models.db import utcnow
 from ..schemas import (
     AblationReport, AblationRow, H1Report, H3Fit, H3Report, StatTest,
 )
@@ -42,7 +43,7 @@ async def get_h1_report(db: AsyncSession = Depends(get_db)):
     settings = get_settings()
     data = _read_json(settings.results_dir / "h1_report.json")
     if not isinstance(data, list):
-        return H1Report(generated_at=datetime.utcnow(), tests=[])
+        return H1Report(generated_at=utcnow(), tests=[])
     tests = [
         StatTest(
             scenario=row.get("scenario", ""),
@@ -57,7 +58,7 @@ async def get_h1_report(db: AsyncSession = Depends(get_db)):
         )
         for row in data
     ]
-    return H1Report(generated_at=datetime.utcnow(), tests=tests)
+    return H1Report(generated_at=utcnow(), tests=tests)
 
 
 # ---------------------------------------------------------------------------
@@ -68,7 +69,7 @@ async def get_h3_report(db: AsyncSession = Depends(get_db)):
     settings = get_settings()
     data = _read_json(settings.results_dir / "h3_report.json")
     if not isinstance(data, dict):
-        return H3Report(generated_at=datetime.utcnow(), fits=[])
+        return H3Report(generated_at=utcnow(), fits=[])
     fits_dict = data.get("fits", {})
     rows_list = data.get("rows", [])
     fits: list[H3Fit] = []
@@ -85,7 +86,7 @@ async def get_h3_report(db: AsyncSession = Depends(get_db)):
             linear_r2=info.get("runtime_linear_r2"),
             raw_points=pol_points,
         ))
-    return H3Report(generated_at=datetime.utcnow(), fits=fits)
+    return H3Report(generated_at=utcnow(), fits=fits)
 
 
 # ---------------------------------------------------------------------------
@@ -96,7 +97,7 @@ async def get_ablation_report(db: AsyncSession = Depends(get_db)):
     settings = get_settings()
     data = _read_json(settings.results_dir / "ablation_report.json")
     if not isinstance(data, dict):
-        return AblationReport(generated_at=datetime.utcnow(), rows=[])
+        return AblationReport(generated_at=utcnow(), rows=[])
     rows = []
     for r in data.get("rows", []):
         rows.append(AblationRow(
@@ -109,4 +110,4 @@ async def get_ablation_report(db: AsyncSession = Depends(get_db)):
             rel_to_full_stockout=r.get("stockout_rate_rel_to_full"),
             rel_to_full_cost=r.get("total_cost_rel_to_full"),
         ))
-    return AblationReport(generated_at=datetime.utcnow(), rows=rows)
+    return AblationReport(generated_at=utcnow(), rows=rows)

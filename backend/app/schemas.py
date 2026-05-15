@@ -5,13 +5,49 @@ evolve independently from the database schema.
 """
 from __future__ import annotations
 
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Any, Optional
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, field_serializer
 
 
-class ORMModel(BaseModel):
+def _serialize_dt(v: Optional[datetime]) -> Optional[str]:
+    """Serialize datetimes as RFC 3339 with a TZ marker.
+
+    Why: SQLite doesn't preserve tzinfo, so datetimes read back from the
+    DB are naive. JavaScript's `new Date(iso)` interprets naive ISO
+    strings as *local* time, which corrupted every clock in the UI.
+    Coerce naive datetimes to UTC and always emit a `+00:00` suffix so
+    the browser parses them correctly and `.toLocaleString()` renders
+    them in the user's zone.
+    """
+    if v is None:
+        return None
+    if v.tzinfo is None:
+        v = v.replace(tzinfo=timezone.utc)
+    return v.isoformat()
+
+
+class TimedModel(BaseModel):
+    """Base for any schema that contains datetime fields.
+
+    The `field_serializer` runs against the listed field names if they
+    exist on the subclass (check_fields=False suppresses the error when
+    a subclass has none of them). The covered names — created_at,
+    updated_at, started_at, finished_at, generated_at — are all the
+    datetime fields currently in the API surface. New names should be
+    added here.
+    """
+
+    @field_serializer(
+        "created_at", "updated_at", "started_at", "finished_at",
+        "generated_at", check_fields=False,
+    )
+    def _ser_dt(self, v: Optional[datetime]) -> Optional[str]:
+        return _serialize_dt(v)
+
+
+class ORMModel(TimedModel):
     model_config = ConfigDict(from_attributes=True)
 
 
@@ -111,7 +147,7 @@ class StatTest(BaseModel):
     cohens_d: Optional[float] = None
 
 
-class H1Report(BaseModel):
+class H1Report(TimedModel):
     generated_at: datetime
     tests: list[StatTest]
 
@@ -126,7 +162,7 @@ class H3Fit(BaseModel):
     raw_points: list[dict[str, Any]] = Field(default_factory=list)
 
 
-class H3Report(BaseModel):
+class H3Report(TimedModel):
     generated_at: datetime
     fits: list[H3Fit]
 
@@ -142,7 +178,7 @@ class AblationRow(BaseModel):
     rel_to_full_cost: Optional[float] = None
 
 
-class AblationReport(BaseModel):
+class AblationReport(TimedModel):
     generated_at: datetime
     rows: list[AblationRow]
 

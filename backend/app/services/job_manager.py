@@ -13,7 +13,9 @@ import logging
 import subprocess
 import uuid
 from collections import defaultdict, deque
-from datetime import datetime
+from datetime import datetime  # noqa: F401  (kept for type hints)
+
+from ..models.db import utcnow
 from pathlib import Path
 from typing import Any, AsyncIterator
 
@@ -98,7 +100,7 @@ class JobManager:
                 if job is None:
                     return
                 job.status = "running"
-                job.started_at = datetime.utcnow()
+                job.started_at = utcnow()
                 await session.commit()
                 await self._emit(job_id, {"type": "status", "status": "running"})
 
@@ -140,7 +142,7 @@ class JobManager:
                     return
                 if job.status != "failed":
                     job.status = "succeeded"
-                    job.finished_at = datetime.utcnow()
+                    job.finished_at = utcnow()
                     job.progress_pct = 100.0
                     await session.commit()
                     await self._emit(job_id, {"type": "status", "status": "succeeded"})
@@ -187,7 +189,7 @@ class JobManager:
             if job is not None:
                 job.status = "failed"
                 job.error = error
-                job.finished_at = datetime.utcnow()
+                job.finished_at = utcnow()
                 await session.commit()
         await self._emit(job_id, {"type": "status", "status": "failed", "error": error})
 
