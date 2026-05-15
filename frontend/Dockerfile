@@ -23,6 +23,10 @@ COPY --from=deps /app/node_modules ./node_modules
 ARG NEXT_PUBLIC_API_URL
 ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
 ENV NEXT_TELEMETRY_DISABLED=1
+# Ensure public/ exists even if the repo hasn't shipped any static assets —
+# the runner stage unconditionally COPYs it and Docker errors out on a
+# missing source path.
+RUN mkdir -p public
 RUN npm run build
 
 FROM node:20-alpine AS runner
