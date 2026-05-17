@@ -134,45 +134,100 @@ def fig_h1_stockout() -> None:
 # Figure 2: H1 cost decomposition (stacked) per (scenario, policy)
 # ============================================================================
 def fig_h1_cost_decomposition() -> None:
-    print("Figure 2: cost decomposition")
-    fig, axes = plt.subplots(2, 3, figsize=(11, 6), sharey=True)
+    """Stacked cost decomposition per (scenario × policy).
+
+    Design notes (post-review):
+    - sharey=True is kept so bars are visually comparable across the six
+      scenarios; the substantive H2-reframe finding is precisely that
+      the totals are roughly the same except under catastrophic.
+    - Total-cost value labels are added on top of every stacked column so
+      small but real differences (e.g. MAS goes 185k -> 210k -> 304k
+      across no_drift -> severe_abrupt -> catastrophic) are readable
+      even though they're invisible at the bar-height level.
+    - A footnote on the figure flags the stockout-cost sub-pixel issue:
+      orange slices for MAS and Periodic are visually absent because
+      their stockout cost is under $1.5k against a ~$650k axis, which
+      could otherwise be misread as "no stockout penalty modeled."
+    """
+    print("Figure 2: cost decomposition (with value labels)")
+    fig, axes = plt.subplots(2, 3, figsize=(11.5, 6.6), sharey=True)
     axes = axes.flatten()
     cost_keys = [("holding_cost", "Holding"),
                  ("ordering_cost", "Ordering"),
                  ("stockout_cost", "Stockout")]
     cost_colors = ["#0072B2", "#56B4E9", "#D55E00"]
 
+    # Per-policy short labels reused across subplots.
+    pol_labels = [
+        POLICY_LABELS[p]
+        .replace(" (proposed)", "")
+        .replace("Periodic Forecasting", "Periodic")
+        for p in POLICY_ORDER
+    ]
+
     for ax, scen in zip(axes, SCENARIO_ORDER):
         x = np.arange(len(POLICY_ORDER))
         bottoms = np.zeros(len(POLICY_ORDER))
+        # Track the per-policy total so we can label the top of each
+        # stacked column with a single dollar figure.
+        totals = np.zeros(len(POLICY_ORDER))
+
         for (key, label), color in zip(cost_keys, cost_colors):
             heights = []
             for pol in POLICY_ORDER:
                 agg = _load_agg(f"olist_{pol}_{scen}")
                 mt = _agg_metric(agg, key)
-                heights.append(mt[0] if mt else 0)
+                heights.append(mt[0] if mt else 0.0)
             ax.bar(x, heights, bottom=bottoms, color=color, label=label,
                    edgecolor="white", linewidth=0.5, width=0.6)
             bottoms += np.array(heights)
+            totals += np.array(heights)
+
+        # Total-cost value label on top of each stacked column.
+        for xi, total in zip(x, totals):
+            if total <= 0:
+                continue
+            ax.text(
+                xi, total + 12_000,  # ~2% of typical axis range above the bar
+                f"${total/1000:.0f}k",
+                ha="center", va="bottom",
+                fontsize=8.2, fontweight="bold", color="#1F2933",
+            )
 
         ax.set_xticks(x)
-        ax.set_xticklabels(
-            [POLICY_LABELS[p].replace(" (proposed)", "").replace("Periodic Forecasting", "Periodic")
-             for p in POLICY_ORDER], rotation=15
-        )
+        ax.set_xticklabels(pol_labels, rotation=15)
         ax.set_title(SCENARIO_LABELS[scen], fontsize=10)
         ax.yaxis.set_major_formatter(matplotlib.ticker.FuncFormatter(
             lambda v, _: f"${v/1000:.0f}k"))
 
+    # Add headroom so the topmost value label doesn't get clipped by the
+    # subplot frame. The catastrophic Periodic bar (~$648k) is the tallest.
+    for ax in axes:
+        ymin, ymax = ax.get_ylim()
+        ax.set_ylim(ymin, max(ymax, 720_000))
+
     axes[0].set_ylabel("Total cost (USD over 504-day test window)")
     axes[3].set_ylabel("Total cost (USD over 504-day test window)")
 
-    # Single legend at top
+    # Single legend at top.
     handles, labels = axes[0].get_legend_handles_labels()
     fig.legend(handles, labels, loc="upper center", ncol=3, frameon=False,
                bbox_to_anchor=(0.5, 1.01))
-    fig.suptitle("Cost decomposition: holding + ordering + stockout per scenario × policy",
-                 y=1.05, fontsize=11)
+    fig.suptitle(
+        "Cost decomposition: holding + ordering + stockout per scenario × policy",
+        y=1.05, fontsize=11,
+    )
+
+    # Caption note flagging the sub-pixel stockout slices for MAS/Periodic.
+    fig.text(
+        0.5, -0.02,
+        "Stockout cost for MAS and Periodic is < $1.5k in every scenario; "
+        "the orange slice is therefore not visible at this y-scale "
+        "(see Table 4.3 / dashboard /reports/h1 for the exact values).",
+        ha="center", va="top",
+        fontsize=8.4, style="italic", color="#4B5563",
+    )
+
     plt.tight_layout()
     _save(fig, "h1_cost_decomposition")
 
