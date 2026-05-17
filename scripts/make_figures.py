@@ -97,13 +97,20 @@ def _save(fig, name: str) -> None:
 # Figure 1: H1 stockout-rate comparison across scenarios
 # ============================================================================
 def fig_h1_stockout() -> None:
+    """H1 stockout-rate comparison bar chart.
+
+    Layout notes: Static ROP bars reach ~91% in every scenario, so an
+    in-plot legend at any upper corner collides with bar tops. We place
+    the legend BELOW the x-axis as a horizontal row and use suptitle for
+    the heading so the title doesn't compete with the bars either.
+    """
     print("Figure 1: H1 stockout-rate comparison")
     n_scen = len(SCENARIO_ORDER)
-    n_pol = len(POLICY_ORDER)
     width = 0.26
     x = np.arange(n_scen)
 
-    fig, ax = plt.subplots(figsize=(8.5, 4.2))
+    # Slightly taller figure to leave room for the below-plot legend.
+    fig, ax = plt.subplots(figsize=(8.8, 4.8))
     for i, pol in enumerate(POLICY_ORDER):
         means, stds = [], []
         for scen in SCENARIO_ORDER:
@@ -113,20 +120,37 @@ def fig_h1_stockout() -> None:
                 means.append(mt[0] * 100)
                 stds.append(mt[1] * 100)
             else:
-                means.append(0); stds.append(0)
+                means.append(0)
+                stds.append(0)
         offset = (i - 1) * width
-        ax.bar(x + offset, means, width, yerr=stds,
-               color=POLICY_COLORS[pol], label=POLICY_LABELS[pol],
-               edgecolor="white", linewidth=0.6,
-               error_kw=dict(ecolor="#333", lw=0.8, capsize=2.5))
+        ax.bar(
+            x + offset, means, width, yerr=stds,
+            color=POLICY_COLORS[pol], label=POLICY_LABELS[pol],
+            edgecolor="white", linewidth=0.6,
+            error_kw=dict(ecolor="#333", lw=0.8, capsize=2.5),
+        )
 
     ax.set_xticks(x)
     ax.set_xticklabels([SCENARIO_LABELS[s] for s in SCENARIO_ORDER], rotation=15)
     ax.set_ylabel("Stockout rate (% of test-window steps)")
-    ax.set_title("H1: Multi-agent system reduces stockouts vs both baselines\n"
-                 "(N=10 seeds per cell; Mann–Whitney p ≤ 0.004 in every comparison)")
-    ax.legend(loc="upper left", frameon=False)
     ax.set_ylim(0, 100)
+
+    # Title goes on the figure (not the axes) so it doesn't push down
+    # into the plot area where the tall Static ROP bars live.
+    fig.suptitle(
+        "H1: Multi-agent system reduces stockouts vs both baselines\n"
+        "(N = 10 seeds per cell; Mann–Whitney p ≤ 0.004 in every comparison)",
+        fontsize=11, y=0.99,
+    )
+
+    # Horizontal legend below the x-axis tick labels — keeps it well
+    # clear of the bars regardless of which scenarios are added later.
+    ax.legend(
+        loc="upper center", bbox_to_anchor=(0.5, -0.18),
+        ncol=3, frameon=False, handlelength=1.6, columnspacing=2.0,
+    )
+
+    plt.tight_layout(rect=[0, 0.04, 1, 0.93])
     _save(fig, "h1_stockout_rate")
 
 
