@@ -400,12 +400,105 @@ def fig_timeseries_catastrophic() -> None:
 
 
 # ============================================================================
+# Figure 2b: H1 cost components, one panel per component, per-panel y-scale
+# ============================================================================
+def fig_h1_cost_components() -> None:
+    """Companion to fig_h1_cost_decomposition.
+
+    The stacked-decomposition figure shares a single y-axis across all six
+    subplots so the bars are comparable, but that hides the within-policy
+    variation across scenarios (e.g. MAS holding cost rising from $61k in
+    no_drift to $182k in catastrophic — a 3× change that's a 4% pixel
+    shift on a $0–650k axis). This figure breaks each cost component out
+    onto its own panel with a y-scale tuned to that component, so the
+    structural pattern across drift severities pops.
+
+    Three panels, left → right: Holding · Ordering · Stockout.
+    Each panel: 6 scenario clusters × 3 policy bars, with numeric
+    value labels on each bar.
+    """
+    print("Figure 2b: cost components (per-component y-scales)")
+    fig, axes = plt.subplots(1, 3, figsize=(13.5, 4.6))
+    cost_keys = [
+        ("holding_cost", "Holding cost"),
+        ("ordering_cost", "Ordering cost"),
+        ("stockout_cost", "Stockout penalty"),
+    ]
+
+    n_pol = len(POLICY_ORDER)
+    n_scen = len(SCENARIO_ORDER)
+    bar_w = 0.26
+    group_x = np.arange(n_scen)
+
+    for ax, (key, label) in zip(axes, cost_keys):
+        # Per-policy bar series across all scenarios.
+        max_height = 0.0
+        for i, pol in enumerate(POLICY_ORDER):
+            heights = []
+            for scen in SCENARIO_ORDER:
+                agg = _load_agg(f"olist_{pol}_{scen}")
+                mt = _agg_metric(agg, key)
+                heights.append(mt[0] if mt else 0.0)
+            offset = (i - (n_pol - 1) / 2) * bar_w
+            bars = ax.bar(
+                group_x + offset, heights, bar_w,
+                color=POLICY_COLORS[pol],
+                label=POLICY_LABELS[pol].replace(" (proposed)", ""),
+                edgecolor="white", linewidth=0.6,
+            )
+            max_height = max(max_height, max(heights))
+            # Numeric value label on each bar (in $k).
+            for rect, h in zip(bars, heights):
+                if h == 0:
+                    continue
+                # Decide label format: < 10k → one decimal in $k; >= 10k → no decimal.
+                if h < 10_000:
+                    lbl = f"${h/1000:.1f}k"
+                else:
+                    lbl = f"${h/1000:.0f}k"
+                ax.text(
+                    rect.get_x() + rect.get_width() / 2,
+                    h, lbl,
+                    ha="center", va="bottom",
+                    fontsize=6.8, color="#333", rotation=0,
+                )
+
+        # Per-panel y-scale: head-room above the tallest bar for the labels.
+        ax.set_ylim(0, max_height * 1.18 if max_height > 0 else 1.0)
+        ax.set_xticks(group_x)
+        ax.set_xticklabels(
+            [SCENARIO_LABELS[s] for s in SCENARIO_ORDER],
+            rotation=25, ha="right", fontsize=8.5,
+        )
+        ax.set_title(label, fontsize=11, pad=8)
+        ax.yaxis.set_major_formatter(matplotlib.ticker.FuncFormatter(
+            lambda v, _: f"${v/1000:.0f}k"))
+        ax.grid(axis="y", alpha=0.25, linestyle="-")
+        ax.set_axisbelow(True)
+
+    axes[0].set_ylabel("Mean cost (USD over 504-day test window, N = 10 seeds)")
+
+    # Single legend at the top.
+    handles, labels = axes[0].get_legend_handles_labels()
+    fig.legend(handles, labels, loc="upper center", ncol=3, frameon=False,
+               bbox_to_anchor=(0.5, 1.02), fontsize=9.5)
+    fig.suptitle(
+        "Cost components broken out by policy — per-panel y-scales reveal "
+        "the within-component variation across drift severities",
+        y=1.08, fontsize=10.5,
+    )
+    plt.tight_layout(rect=[0, 0, 1, 0.97])
+    _save(fig, "h1_cost_components")
+
+
+# ============================================================================
 # Main
 # ============================================================================
 def main() -> None:
     print(f"Writing figures to {FIGURES}/ ...\n")
     fig_h1_stockout()
     fig_h1_cost_decomposition()
+    fig_h1_cost_components()
     fig_h3_scaling()
     fig_ablation()
     fig_mape()
