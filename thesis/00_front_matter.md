@@ -186,9 +186,8 @@ Python community whose tools made this work reproducible.
 | Figure | Description |
 |:-:|:-:|
 | 4.1 | H1 — Stockout rate by policy and scenario |
-| 4.2 | Cost decomposition across scenarios and policies (stacked, shared y-axis) |
-| 4.3 | Cost components broken out per panel with per-panel y-scales |
-| 4.4 | H3 — Runtime and memory scaling (log–log axes) |
-| 4.5 | Ablation — stockout rate and total cost by variant |
-| 4.6 | Forecast MAPE per scenario (MAS only) |
-| 4.7 | Catastrophic scenario time series (on-hand and stockouts) |
+| 4.2 | Cost decomposition across scenarios and policies |
+| 4.3 | H3 — Runtime and memory scaling (log–log axes) |
+| 4.4 | Ablation — stockout rate and total cost by variant |
+| 4.5 | Forecast MAPE per scenario (MAS only) |
+| 4.6 | Catastrophic scenario time series (on-hand and stockouts) |

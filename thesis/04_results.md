@@ -101,17 +101,7 @@ Two observations:
 Figure 4.2 decomposes total cost into holding, ordering, and stockout
 components for each policy and scenario.
 
-![Figure 4.2. Cost decomposition across scenarios and policies (stacked totals, shared y-axis).](figures/h1_cost_decomposition.png)
-
-Figure 4.2 is shared-y for cross-policy comparability, which makes the
-within-component variation across scenarios hard to read at a glance —
-MAS holding cost, for example, rises from \$61k under no-drift to \$182k
-under the catastrophic scenario, but on a \$0–650k axis that 3× jump is
-only a four-pixel shift. Figure 4.3 breaks each component onto its own
-panel with a per-panel y-scale so the structural pattern across drift
-severities becomes visible.
-
-![Figure 4.3. The same data as Figure 4.2 with one panel per cost component and per-panel y-scales. Numeric value labels make every bar legible. Note: (i) MAS holding cost stays flat through `severe_abrupt` then triples under `catastrophic`, indicating the EOQ-derived order-up-to level is sized for shocks below that threshold; (ii) MAS ordering cost is roughly 5× Static ROP and 1.7× Periodic because adaptive safety-stock recalculation triggers more frequent reorders; (iii) Static ROP is the only policy that accrues a substantive stockout penalty (\~\$36k uniformly); MAS and Periodic stay under \$1.5k in every scenario.](figures/h1_cost_components.png)
+![Cost decomposition across scenarios and policies.](figures/h1_cost_decomposition.png)
 
 ## 4.3 H3 — Scalability
 
