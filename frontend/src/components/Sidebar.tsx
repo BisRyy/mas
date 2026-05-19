@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   Activity, BarChart3, Beaker, BookA, FlaskConical, Github, GitCompare,
-  Home, LayoutDashboard, PlayCircle, Search, ScrollText, Settings,
+  Home, LayoutDashboard, Network, PlayCircle, Search, ScrollText, Settings,
 } from "lucide-react";
 
 const GITHUB_URL = "https://github.com/BisRyy/mas";
@@ -20,6 +20,7 @@ const NAV = [
   { href: "/experiments", label: "Experiments", Icon: FlaskConical },
   { href: "/compare", label: "Comparison", Icon: GitCompare },
   { href: "/decisions", label: "Decision audit", Icon: Search },
+  { href: "/agents", label: "Live agents", Icon: Network },
   { href: "/reports/h1", label: "H1 — Performance", Icon: BarChart3 },
   { href: "/reports/h2", label: "H2 — Cost-efficiency", Icon: BarChart3 },
   { href: "/reports/h3", label: "H3 — Scalability", Icon: Activity },

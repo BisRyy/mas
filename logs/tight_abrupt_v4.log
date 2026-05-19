@@ -1,0 +1,128 @@
+Sweeping 1 config(s) × 30 seed(s) = 30 runs. jitter=0.2.
+[1/30] olist_static_rop_tight_abrupt seed=1  stockout=95.24%  cost=$   290,956  (0.1s)
+[2/30] olist_static_rop_tight_abrupt seed=2  stockout=95.24%  cost=$   290,951  (0.0s)
+[3/30] olist_static_rop_tight_abrupt seed=3  stockout=95.24%  cost=$   290,909  (0.0s)
+[4/30] olist_static_rop_tight_abrupt seed=4  stockout=95.04%  cost=$   290,970  (0.0s)
+[5/30] olist_static_rop_tight_abrupt seed=5  stockout=95.44%  cost=$   290,956  (0.0s)
+[6/30] olist_static_rop_tight_abrupt seed=6  stockout=94.84%  cost=$   290,985  (0.0s)
+[7/30] olist_static_rop_tight_abrupt seed=7  stockout=95.44%  cost=$   290,950  (0.1s)
+[8/30] olist_static_rop_tight_abrupt seed=8  stockout=95.24%  cost=$   290,972  (0.0s)
+[9/30] olist_static_rop_tight_abrupt seed=9  stockout=95.04%  cost=$   290,973  (0.0s)
+[10/30] olist_static_rop_tight_abrupt seed=10  stockout=95.24%  cost=$   290,964  (0.0s)
+[11/30] olist_static_rop_tight_abrupt seed=11  stockout=95.04%  cost=$   290,969  (0.0s)
+[12/30] olist_static_rop_tight_abrupt seed=12  stockout=95.44%  cost=$   290,941  (0.1s)
+[13/30] olist_static_rop_tight_abrupt seed=13  stockout=95.24%  cost=$   290,930  (0.0s)
+[14/30] olist_static_rop_tight_abrupt seed=14  stockout=95.24%  cost=$   290,988  (0.0s)
+[15/30] olist_static_rop_tight_abrupt seed=15  stockout=95.24%  cost=$   290,949  (0.0s)
+[16/30] olist_static_rop_tight_abrupt seed=16  stockout=95.44%  cost=$   290,960  (0.0s)
+[17/30] olist_static_rop_tight_abrupt seed=17  stockout=95.24%  cost=$   290,965  (0.0s)
+[18/30] olist_static_rop_tight_abrupt seed=18  stockout=95.24%  cost=$   291,005  (0.0s)
+[19/30] olist_static_rop_tight_abrupt seed=19  stockout=95.04%  cost=$   290,962  (0.0s)
+[20/30] olist_static_rop_tight_abrupt seed=20  stockout=95.04%  cost=$   290,970  (0.0s)
+[21/30] olist_static_rop_tight_abrupt seed=21  stockout=95.24%  cost=$   290,933  (0.0s)
+[22/30] olist_static_rop_tight_abrupt seed=22  stockout=95.24%  cost=$   290,948  (0.0s)
+[23/30] olist_static_rop_tight_abrupt seed=23  stockout=95.24%  cost=$   291,000  (0.0s)
+[24/30] olist_static_rop_tight_abrupt seed=24  stockout=95.24%  cost=$   290,969  (0.0s)
+[25/30] olist_static_rop_tight_abrupt seed=25  stockout=95.44%  cost=$   290,962  (0.0s)
+[26/30] olist_static_rop_tight_abrupt seed=26  stockout=95.44%  cost=$   290,970  (0.0s)
+[27/30] olist_static_rop_tight_abrupt seed=27  stockout=95.24%  cost=$   290,933  (0.0s)
+[28/30] olist_static_rop_tight_abrupt seed=28  stockout=95.44%  cost=$   290,971  (0.0s)
+[29/30] olist_static_rop_tight_abrupt seed=29  stockout=95.24%  cost=$   290,948  (0.0s)
+[30/30] olist_static_rop_tight_abrupt seed=30  stockout=95.24%  cost=$   290,981  (0.0s)
+
+Sweep finished in 1.4s (0.0s/run avg). 0 failure(s).
+=== ROP DONE ===
+/Users/bisry/Documents/IF/inventory-mas/.venv/lib/python3.14/site-packages/mesa/mesa_logging.py:112: FutureWarning: The use of the `seed` keyword argument is deprecated, use `rng` instead. No functional changes.
+  res = func(*args, **kwargs)
+/Users/bisry/Documents/IF/inventory-mas/.venv/lib/python3.14/site-packages/mesa/mesa_logging.py:112: FutureWarning: The use of the `seed` keyword argument is deprecated, use `rng` instead. No functional changes.
+  res = func(*args, **kwargs)
+/Users/bisry/Documents/IF/inventory-mas/.venv/lib/python3.14/site-packages/mesa/mesa_logging.py:112: FutureWarning: The use of the `seed` keyword argument is deprecated, use `rng` instead. No functional changes.
+  res = func(*args, **kwargs)
+/Users/bisry/Documents/IF/inventory-mas/.venv/lib/python3.14/site-packages/mesa/mesa_logging.py:112: FutureWarning: The use of the `seed` keyword argument is deprecated, use `rng` instead. No functional changes.
+  res = func(*args, **kwargs)
+/Users/bisry/Documents/IF/inventory-mas/.venv/lib/python3.14/site-packages/mesa/mesa_logging.py:112: FutureWarning: The use of the `seed` keyword argument is deprecated, use `rng` instead. No functional changes.
+  res = func(*args, **kwargs)
+/Users/bisry/Documents/IF/inventory-mas/.venv/lib/python3.14/site-packages/mesa/mesa_logging.py:112: FutureWarning: The use of the `seed` keyword argument is deprecated, use `rng` instead. No functional changes.
+  res = func(*args, **kwargs)
+/Users/bisry/Documents/IF/inventory-mas/.venv/lib/python3.14/site-packages/mesa/mesa_logging.py:112: FutureWarning: The use of the `seed` keyword argument is deprecated, use `rng` instead. No functional changes.
+  res = func(*args, **kwargs)
+/Users/bisry/Documents/IF/inventory-mas/.venv/lib/python3.14/site-packages/mesa/mesa_logging.py:112: FutureWarning: The use of the `seed` keyword argument is deprecated, use `rng` instead. No functional changes.
+  res = func(*args, **kwargs)
+/Users/bisry/Documents/IF/inventory-mas/.venv/lib/python3.14/site-packages/mesa/mesa_logging.py:112: FutureWarning: The use of the `seed` keyword argument is deprecated, use `rng` instead. No functional changes.
+  res = func(*args, **kwargs)
+/Users/bisry/Documents/IF/inventory-mas/.venv/lib/python3.14/site-packages/mesa/mesa_logging.py:112: FutureWarning: The use of the `seed` keyword argument is deprecated, use `rng` instead. No functional changes.
+  res = func(*args, **kwargs)
+/Users/bisry/Documents/IF/inventory-mas/.venv/lib/python3.14/site-packages/mesa/mesa_logging.py:112: FutureWarning: The use of the `seed` keyword argument is deprecated, use `rng` instead. No functional changes.
+  res = func(*args, **kwargs)
+/Users/bisry/Documents/IF/inventory-mas/.venv/lib/python3.14/site-packages/mesa/mesa_logging.py:112: FutureWarning: The use of the `seed` keyword argument is deprecated, use `rng` instead. No functional changes.
+  res = func(*args, **kwargs)
+/Users/bisry/Documents/IF/inventory-mas/.venv/lib/python3.14/site-packages/mesa/mesa_logging.py:112: FutureWarning: The use of the `seed` keyword argument is deprecated, use `rng` instead. No functional changes.
+  res = func(*args, **kwargs)
+/Users/bisry/Documents/IF/inventory-mas/.venv/lib/python3.14/site-packages/mesa/mesa_logging.py:112: FutureWarning: The use of the `seed` keyword argument is deprecated, use `rng` instead. No functional changes.
+  res = func(*args, **kwargs)
+/Users/bisry/Documents/IF/inventory-mas/.venv/lib/python3.14/site-packages/mesa/mesa_logging.py:112: FutureWarning: The use of the `seed` keyword argument is deprecated, use `rng` instead. No functional changes.
+  res = func(*args, **kwargs)
+/Users/bisry/Documents/IF/inventory-mas/.venv/lib/python3.14/site-packages/mesa/mesa_logging.py:112: FutureWarning: The use of the `seed` keyword argument is deprecated, use `rng` instead. No functional changes.
+  res = func(*args, **kwargs)
+/Users/bisry/Documents/IF/inventory-mas/.venv/lib/python3.14/site-packages/mesa/mesa_logging.py:112: FutureWarning: The use of the `seed` keyword argument is deprecated, use `rng` instead. No functional changes.
+  res = func(*args, **kwargs)
+/Users/bisry/Documents/IF/inventory-mas/.venv/lib/python3.14/site-packages/mesa/mesa_logging.py:112: FutureWarning: The use of the `seed` keyword argument is deprecated, use `rng` instead. No functional changes.
+  res = func(*args, **kwargs)
+/Users/bisry/Documents/IF/inventory-mas/.venv/lib/python3.14/site-packages/mesa/mesa_logging.py:112: FutureWarning: The use of the `seed` keyword argument is deprecated, use `rng` instead. No functional changes.
+  res = func(*args, **kwargs)
+/Users/bisry/Documents/IF/inventory-mas/.venv/lib/python3.14/site-packages/mesa/mesa_logging.py:112: FutureWarning: The use of the `seed` keyword argument is deprecated, use `rng` instead. No functional changes.
+  res = func(*args, **kwargs)
+/Users/bisry/Documents/IF/inventory-mas/.venv/lib/python3.14/site-packages/mesa/mesa_logging.py:112: FutureWarning: The use of the `seed` keyword argument is deprecated, use `rng` instead. No functional changes.
+  res = func(*args, **kwargs)
+/Users/bisry/Documents/IF/inventory-mas/.venv/lib/python3.14/site-packages/mesa/mesa_logging.py:112: FutureWarning: The use of the `seed` keyword argument is deprecated, use `rng` instead. No functional changes.
+  res = func(*args, **kwargs)
+/Users/bisry/Documents/IF/inventory-mas/.venv/lib/python3.14/site-packages/mesa/mesa_logging.py:112: FutureWarning: The use of the `seed` keyword argument is deprecated, use `rng` instead. No functional changes.
+  res = func(*args, **kwargs)
+/Users/bisry/Documents/IF/inventory-mas/.venv/lib/python3.14/site-packages/mesa/mesa_logging.py:112: FutureWarning: The use of the `seed` keyword argument is deprecated, use `rng` instead. No functional changes.
+  res = func(*args, **kwargs)
+/Users/bisry/Documents/IF/inventory-mas/.venv/lib/python3.14/site-packages/mesa/mesa_logging.py:112: FutureWarning: The use of the `seed` keyword argument is deprecated, use `rng` instead. No functional changes.
+  res = func(*args, **kwargs)
+/Users/bisry/Documents/IF/inventory-mas/.venv/lib/python3.14/site-packages/mesa/mesa_logging.py:112: FutureWarning: The use of the `seed` keyword argument is deprecated, use `rng` instead. No functional changes.
+  res = func(*args, **kwargs)
+/Users/bisry/Documents/IF/inventory-mas/.venv/lib/python3.14/site-packages/mesa/mesa_logging.py:112: FutureWarning: The use of the `seed` keyword argument is deprecated, use `rng` instead. No functional changes.
+  res = func(*args, **kwargs)
+/Users/bisry/Documents/IF/inventory-mas/.venv/lib/python3.14/site-packages/mesa/mesa_logging.py:112: FutureWarning: The use of the `seed` keyword argument is deprecated, use `rng` instead. No functional changes.
+  res = func(*args, **kwargs)
+/Users/bisry/Documents/IF/inventory-mas/.venv/lib/python3.14/site-packages/mesa/mesa_logging.py:112: FutureWarning: The use of the `seed` keyword argument is deprecated, use `rng` instead. No functional changes.
+  res = func(*args, **kwargs)
+/Users/bisry/Documents/IF/inventory-mas/.venv/lib/python3.14/site-packages/mesa/mesa_logging.py:112: FutureWarning: The use of the `seed` keyword argument is deprecated, use `rng` instead. No functional changes.
+  res = func(*args, **kwargs)
+Sweeping 1 config(s) × 30 seed(s) = 30 runs. jitter=0.2.
+[1/30] olist_mas_tight_abrupt seed=1  stockout=38.29%  cost=$   227,582  (96.3s)
+[2/30] olist_mas_tight_abrupt seed=2  stockout=39.09%  cost=$   225,309  (93.8s)
+[3/30] olist_mas_tight_abrupt seed=3  stockout=40.08%  cost=$   228,447  (88.7s)
+[4/30] olist_mas_tight_abrupt seed=4  stockout=40.67%  cost=$   227,677  (86.9s)
+[5/30] olist_mas_tight_abrupt seed=5  stockout=38.89%  cost=$   228,047  (86.0s)
+[6/30] olist_mas_tight_abrupt seed=6  stockout=39.88%  cost=$   226,138  (92.5s)
+[7/30] olist_mas_tight_abrupt seed=7  stockout=37.90%  cost=$   228,650  (88.1s)
+[8/30] olist_mas_tight_abrupt seed=8  stockout=40.48%  cost=$   228,745  (83.6s)
+[9/30] olist_mas_tight_abrupt seed=9  stockout=39.68%  cost=$   231,490  (95.7s)
+[10/30] olist_mas_tight_abrupt seed=10  stockout=39.48%  cost=$   226,038  (88.1s)
+[11/30] olist_mas_tight_abrupt seed=11  stockout=39.29%  cost=$   230,737  (89.1s)
+[12/30] olist_mas_tight_abrupt seed=12  stockout=40.28%  cost=$   226,737  (87.1s)
+[13/30] olist_mas_tight_abrupt seed=13  stockout=40.28%  cost=$   224,535  (83.7s)
+[14/30] olist_mas_tight_abrupt seed=14  stockout=39.09%  cost=$   227,523  (83.9s)
+[15/30] olist_mas_tight_abrupt seed=15  stockout=42.26%  cost=$   228,714  (86.3s)
+[16/30] olist_mas_tight_abrupt seed=16  stockout=40.28%  cost=$   229,615  (85.9s)
+[17/30] olist_mas_tight_abrupt seed=17  stockout=37.90%  cost=$   226,716  (86.0s)
+[18/30] olist_mas_tight_abrupt seed=18  stockout=40.48%  cost=$   225,957  (84.6s)
+[19/30] olist_mas_tight_abrupt seed=19  stockout=40.67%  cost=$   225,815  (84.6s)
+[20/30] olist_mas_tight_abrupt seed=20  stockout=40.08%  cost=$   225,860  (84.1s)
+[21/30] olist_mas_tight_abrupt seed=21  stockout=40.87%  cost=$   225,796  (88.3s)
+[22/30] olist_mas_tight_abrupt seed=22  stockout=40.67%  cost=$   226,570  (89.2s)
+[23/30] olist_mas_tight_abrupt seed=23  stockout=41.27%  cost=$   227,026  (89.5s)
+[24/30] olist_mas_tight_abrupt seed=24  stockout=40.67%  cost=$   228,304  (86.7s)
+[25/30] olist_mas_tight_abrupt seed=25  stockout=40.67%  cost=$   226,256  (91.5s)
+[26/30] olist_mas_tight_abrupt seed=26  stockout=41.27%  cost=$   228,489  (89.3s)
+[27/30] olist_mas_tight_abrupt seed=27  stockout=39.29%  cost=$   226,808  (89.4s)
+[28/30] olist_mas_tight_abrupt seed=28  stockout=38.89%  cost=$   225,693  (89.6s)
+[29/30] olist_mas_tight_abrupt seed=29  stockout=39.48%  cost=$   225,990  (90.1s)
+[30/30] olist_mas_tight_abrupt seed=30  stockout=40.48%  cost=$   224,080  (88.3s)
+
+Sweep finished in 2646.9s (88.2s/run avg). 0 failure(s).
+=== MAS DONE ===

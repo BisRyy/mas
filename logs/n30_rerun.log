@@ -1,0 +1,109 @@
+Running experiments/configs/olist_mas_abrupt.yaml seeds 11..30
+[18/20] olist_mas_abrupt seed=28  stockout=18.25%  cost=$   183,486  (82.4s)
+[19/20] olist_mas_abrupt seed=29  stockout=19.44%  cost=$   184,197  (84.6s)
+[20/20] olist_mas_abrupt seed=30  stockout=17.46%  cost=$   186,457  (89.6s)
+
+Sweep finished in 1767.2s (88.4s/run avg). 0 failure(s).
+Running experiments/configs/olist_mas_catastrophic.yaml seeds 11..30
+[18/20] olist_mas_catastrophic seed=28  stockout=25.99%  cost=$   313,903  (90.9s)
+[19/20] olist_mas_catastrophic seed=29  stockout=27.98%  cost=$   314,705  (89.8s)
+[20/20] olist_mas_catastrophic seed=30  stockout=28.37%  cost=$   308,569  (89.7s)
+
+Sweep finished in 1846.1s (92.3s/run avg). 0 failure(s).
+Running experiments/configs/olist_mas_gradual.yaml seeds 11..30
+[18/20] olist_mas_gradual seed=28  stockout=17.86%  cost=$   185,901  (88.0s)
+[19/20] olist_mas_gradual seed=29  stockout=20.44%  cost=$   186,021  (110.7s)
+[20/20] olist_mas_gradual seed=30  stockout=17.66%  cost=$   187,710  (86.8s)
+
+Sweep finished in 1761.8s (88.1s/run avg). 0 failure(s).
+Running experiments/configs/olist_mas_no_drift.yaml seeds 11..30
+[18/20] olist_mas_no_drift seed=28  stockout=17.06%  cost=$   184,701  (81.7s)
+[19/20] olist_mas_no_drift seed=29  stockout=18.65%  cost=$   185,141  (84.5s)
+[20/20] olist_mas_no_drift seed=30  stockout=17.06%  cost=$   186,288  (100.3s)
+
+Sweep finished in 1713.7s (85.7s/run avg). 0 failure(s).
+Running experiments/configs/olist_mas_seasonal.yaml seeds 11..30
+[18/20] olist_mas_seasonal seed=28  stockout=16.87%  cost=$   186,239  (82.7s)
+[19/20] olist_mas_seasonal seed=29  stockout=20.04%  cost=$   186,997  (86.1s)
+[20/20] olist_mas_seasonal seed=30  stockout=17.66%  cost=$   187,317  (94.1s)
+
+Sweep finished in 1706.9s (85.3s/run avg). 0 failure(s).
+Running experiments/configs/olist_mas_severe_abrupt.yaml seeds 11..30
+[18/20] olist_mas_severe_abrupt seed=28  stockout=21.03%  cost=$   212,866  (86.8s)
+[19/20] olist_mas_severe_abrupt seed=29  stockout=22.42%  cost=$   209,464  (86.6s)
+[20/20] olist_mas_severe_abrupt seed=30  stockout=20.83%  cost=$   208,519  (86.3s)
+
+Sweep finished in 1827.8s (91.4s/run avg). 0 failure(s).
+Running experiments/configs/olist_static_rop_abrupt.yaml seeds 11..30
+[18/20] olist_static_rop_abrupt seed=28  stockout=90.08%  cost=$   282,538  (0.0s)
+[19/20] olist_static_rop_abrupt seed=29  stockout=90.28%  cost=$   283,123  (0.0s)
+[20/20] olist_static_rop_abrupt seed=30  stockout=90.28%  cost=$   282,532  (0.0s)
+
+Sweep finished in 0.9s (0.0s/run avg). 0 failure(s).
+Running experiments/configs/olist_static_rop_catastrophic.yaml seeds 11..30
+[18/20] olist_static_rop_catastrophic seed=28  stockout=90.08%  cost=$   273,004  (0.1s)
+[19/20] olist_static_rop_catastrophic seed=29  stockout=90.28%  cost=$   273,668  (0.1s)
+[20/20] olist_static_rop_catastrophic seed=30  stockout=90.28%  cost=$   273,095  (0.1s)
+
+Sweep finished in 1.0s (0.1s/run avg). 0 failure(s).
+Running experiments/configs/olist_static_rop_gradual.yaml seeds 11..30
+[18/20] olist_static_rop_gradual seed=28  stockout=90.08%  cost=$   282,915  (0.0s)
+[19/20] olist_static_rop_gradual seed=29  stockout=90.28%  cost=$   283,505  (0.0s)
+[20/20] olist_static_rop_gradual seed=30  stockout=90.28%  cost=$   282,914  (0.0s)
+
+Sweep finished in 0.9s (0.0s/run avg). 0 failure(s).
+Running experiments/configs/olist_static_rop_no_drift.yaml seeds 11..30
+[18/20] olist_static_rop_no_drift seed=28  stockout=90.08%  cost=$   282,953  (0.0s)
+[19/20] olist_static_rop_no_drift seed=29  stockout=90.28%  cost=$   283,548  (0.0s)
+[20/20] olist_static_rop_no_drift seed=30  stockout=90.28%  cost=$   282,957  (0.0s)
+
+Sweep finished in 0.8s (0.0s/run avg). 0 failure(s).
+Running experiments/configs/olist_static_rop_seasonal.yaml seeds 11..30
+[18/20] olist_static_rop_seasonal seed=28  stockout=90.08%  cost=$   282,783  (0.0s)
+[19/20] olist_static_rop_seasonal seed=29  stockout=90.28%  cost=$   283,379  (0.0s)
+[20/20] olist_static_rop_seasonal seed=30  stockout=90.28%  cost=$   282,793  (0.0s)
+
+Sweep finished in 0.9s (0.0s/run avg). 0 failure(s).
+Running experiments/configs/olist_static_rop_severe_abrupt.yaml seeds 11..30
+[18/20] olist_static_rop_severe_abrupt seed=28  stockout=90.08%  cost=$   281,322  (0.0s)
+[19/20] olist_static_rop_severe_abrupt seed=29  stockout=90.28%  cost=$   282,098  (0.0s)
+[20/20] olist_static_rop_severe_abrupt seed=30  stockout=90.28%  cost=$   281,518  (0.0s)
+
+Sweep finished in 1.1s (0.1s/run avg). 0 failure(s).
+Running experiments/configs/olist_periodic_forecasting_abrupt.yaml seeds 11..30
+[18/20] olist_periodic_forecasting_abrupt seed=28  stockout=27.38%  cost=$   613,502  (5.0s)
+[19/20] olist_periodic_forecasting_abrupt seed=29  stockout=26.19%  cost=$   611,570  (5.4s)
+[20/20] olist_periodic_forecasting_abrupt seed=30  stockout=26.59%  cost=$   611,594  (5.1s)
+
+Sweep finished in 100.7s (5.0s/run avg). 0 failure(s).
+Running experiments/configs/olist_periodic_forecasting_catastrophic.yaml seeds 11..30
+[18/20] olist_periodic_forecasting_catastrophic seed=28  stockout=30.95%  cost=$   648,970  (5.0s)
+[19/20] olist_periodic_forecasting_catastrophic seed=29  stockout=30.56%  cost=$   647,459  (5.0s)
+[20/20] olist_periodic_forecasting_catastrophic seed=30  stockout=30.16%  cost=$   647,357  (5.0s)
+
+Sweep finished in 101.3s (5.1s/run avg). 0 failure(s).
+Running experiments/configs/olist_periodic_forecasting_gradual.yaml seeds 11..30
+[18/20] olist_periodic_forecasting_gradual seed=28  stockout=26.79%  cost=$   613,263  (5.0s)
+[19/20] olist_periodic_forecasting_gradual seed=29  stockout=25.60%  cost=$   610,827  (5.2s)
+[20/20] olist_periodic_forecasting_gradual seed=30  stockout=25.99%  cost=$   610,716  (5.0s)
+
+Sweep finished in 100.6s (5.0s/run avg). 0 failure(s).
+Running experiments/configs/olist_periodic_forecasting_no_drift.yaml seeds 11..30
+[18/20] olist_periodic_forecasting_no_drift seed=28  stockout=26.79%  cost=$   613,475  (5.0s)
+[19/20] olist_periodic_forecasting_no_drift seed=29  stockout=25.60%  cost=$   611,039  (4.9s)
+[20/20] olist_periodic_forecasting_no_drift seed=30  stockout=25.99%  cost=$   610,928  (5.1s)
+
+Sweep finished in 102.2s (5.1s/run avg). 0 failure(s).
+Running experiments/configs/olist_periodic_forecasting_seasonal.yaml seeds 11..30
+[18/20] olist_periodic_forecasting_seasonal seed=28  stockout=26.79%  cost=$   614,631  (5.0s)
+[19/20] olist_periodic_forecasting_seasonal seed=29  stockout=25.79%  cost=$   612,155  (5.0s)
+[20/20] olist_periodic_forecasting_seasonal seed=30  stockout=26.39%  cost=$   612,115  (4.9s)
+
+Sweep finished in 101.0s (5.0s/run avg). 0 failure(s).
+Running experiments/configs/olist_periodic_forecasting_severe_abrupt.yaml seeds 11..30
+[18/20] olist_periodic_forecasting_severe_abrupt seed=28  stockout=27.58%  cost=$   616,845  (5.1s)
+[19/20] olist_periodic_forecasting_severe_abrupt seed=29  stockout=26.98%  cost=$   615,165  (5.0s)
+[20/20] olist_periodic_forecasting_severe_abrupt seed=30  stockout=27.18%  cost=$   615,902  (5.0s)
+
+Sweep finished in 100.4s (5.0s/run avg). 0 failure(s).
+=== ALL SWEEPS DONE ===

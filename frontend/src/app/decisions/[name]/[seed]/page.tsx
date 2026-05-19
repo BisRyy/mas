@@ -130,7 +130,15 @@ export default function DecisionViewerPage({
   return (
     <div className="space-y-6">
       <header className="space-y-1">
-        <Link href="/decisions" className="text-sm">← Decision audit</Link>
+        <div className="flex items-center gap-3">
+          <Link href="/decisions" className="text-sm">← Decision audit</Link>
+          <Link
+            href={`/agents/${encodeURIComponent(name)}/${seedNum}`}
+            className="text-sm text-accent hover:underline"
+          >
+            ⇨ Watch as live agents
+          </Link>
+        </div>
         <h1 className="mt-1 font-mono text-2xl font-bold">{name} · seed {seedNum}</h1>
         {meta.data && (
           <p className="text-ink-muted">

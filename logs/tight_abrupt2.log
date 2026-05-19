@@ -1,0 +1,3 @@
+===Running experiments/configs/olist_mas_tight_abrupt.yaml seeds 1..30===
+/Users/bisry/Documents/IF/inventory-mas/.venv/lib/python3.14/site-packages/mesa/mesa_logging.py:112: FutureWarning: The use of the `seed` keyword argument is deprecated, use `rng` instead. No functional changes.
+  res = func(*args, **kwargs)
